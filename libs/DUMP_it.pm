@@ -24,6 +24,9 @@
 sub DUMP_it{
  #
  my @TYPES = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual Comment abstract title InBook);
+ my @FIELDS = qw(author title journal year volume pages file groups);
+ #
+ open my $fh, '>', "test.bib.db" or die "Can't write '$file': $!";
  #
  my $infile_data;
  my $ic=-1;
@@ -41,25 +44,37 @@ sub DUMP_it{
    chomp($TYP);
    my @matches = grep { /$TYP/ } @TYPES;
    if (!@matches){
-    #print "$ivar $TYP $infile[$ivar] \n";
+    print "TYPR $TYP unlisted \n";
     next};
    $ic=$ic+1;
    $new_entry=1;
    $BIB[$ic]->{TYPE}=$TYP;
-   #print "$ic $BIB[$ic]->{TYPE} @matches\n";
+   $BIB[$ic]->{KEY}=(split('\s+',$infile[$ivar]))[2];
+   $BIB[$ic]->{KEY} =~ s/,//g; 
+   #print "$ic |TYP|$BIB[$ic]->{TYPE}\n";
+   #print "$ic |KEY|$BIB[$ic]->{KEY}\n";
   }
   #
-  if (substr("$infile[$ivar]",0,1) =~ "}") {undef $new_entry};
+  if (substr("$infile[$ivar]",0,1) =~ "}") 
+  {
+   print $fh Dumper $BIB[$ic];
+   undef $new_entry;
+  };
   #
   if ($new_entry)
   {
-    if ("$infile[$ivar]" =~ "= {"){
+    if ("$infile[$ivar]" =~ "="){
      $FIELD=(split('\s+',$infile[$ivar]))[1];
      $VAL=(split('\=',$infile[$ivar]))[1];
+     $VAL =~ s/ {//g;
+     $VAL =~ s/}//g;
+     $VAL =~ s/,//g;
+     $BIB[$ic]->{$FIELD}=$VAL;
+     #print "$ic |$FIELD|$BIB[$ic]->{$FIELD}\n";
     };
-    print "$ic |$FIELD|$VAL| $infile[$ivar]\n";
   }
   #
  }
+close $fh or die "Can't close '$file': $!";
 }
 1;
