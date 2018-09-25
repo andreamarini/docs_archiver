@@ -1,0 +1,3 @@
+[submodule "ydb"]
+	path = ydb
+	url = git@github.com:yambo-code/ydb.git
