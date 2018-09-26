@@ -21,30 +21,19 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 # MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 #
-sub OPTIONS{
-&GetOptions("help"           => \$help,
-            "i=s"            => \$in_bib_file,
-            "o=s"            => \$out_bib_file,
-            "d"              => \$dump,
-            "s=s"            => \$search) or die;
-sub usage {
-
- print <<EndOfUsage
-
-   Syntax: docs_archiver.pl <ARGS>
-           < > are optionals, [ ] are needed
-
-   where <ARGS> must include at least one of:
-                   -h                      This help
-
-                   -i      [FILE]          INPUT bib file
-                   -o      [FILE]          OUTPUT bib file
-                   -d                      Dump contents
-                   -s      [PATTERNS]      Search
-
-EndOfUsage
-  ;
-  exit;
-}
+sub PRINT_it{
+ #
+ my ($ID,$ivar,$file) = @_;
+ #
+ if (not $file eq "stdlog") { open $fh, '>', "$file" or die "Can't write '$file': $!"};
+ #
+ print "@".$BIB[$ID][$ivar]->{TYPE}."{".$BIB[$ID][$ivar]->{KEY}.",\n";
+ foreach my $var(keys %{$BIB[$ID][$ivar]}){
+  print "  $var \t = {$BIB[$ID][$ivar]{$var}},\n";
+ }
+ print "}\n";
+ #
+ if (not $file eq "stdlog") { close $fh or die "Can't close '$file': $!"};
+ #
 }
 1;

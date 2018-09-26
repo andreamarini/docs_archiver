@@ -39,11 +39,21 @@ print "\n Docs Archiver version $version ";
 #&USER_pars_report();
 #
 # Help
-if($help or not $bib_file){ &usage };
+if($help or not $in_bib_file){ &usage };
 #
-# Dump it
+# Dump in
 #
-if ($dump) { &DUMP_it};
+if ($in_bib_file)  {&DUMP_it($in_bib_file,0)};
+print "\n\n Read $NBIB[0] entries from $in_bib_file\n";
+#
+# Dump out and add in
+#
+if ($out_bib_file) {
+ &DUMP_it($out_bib_file,1);
+ print " Read $NBIB[1] entries from $out_bib_file\n";
+ &ADD_it;
+}
+#
 # JOB related operations
 #
 #if ($job) { 

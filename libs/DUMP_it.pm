@@ -23,16 +23,17 @@
 #
 sub DUMP_it{
  #
- my @TYPES = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual Comment abstract title InBook);
+ my ($file,$ID) = @_;
+ #
+ my @TYPES = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual Comment abstract title InBook comment);
  my @FIELDS = qw(author title journal year volume pages file groups);
  #
- open my $fh, '>', "test.bib.db" or die "Can't write '$file': $!";
+ if ($dump) { open $fh, '>', "$file".".db" or die "Can't write '$file' db: $!"};
  #
  my $infile_data;
  my $ic=-1;
  my $new_entry=0;
- print "\n\n";
- $infile_data = &read_file($bib_file);
+ $infile_data = &read_file($file);
  my @infile=split(/\n/,$infile_data);
  my $size = scalar @infile;
  for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1){
@@ -48,16 +49,16 @@ sub DUMP_it{
     next};
    $ic=$ic+1;
    $new_entry=1;
-   $BIB[$ic]->{TYPE}=$TYP;
-   $BIB[$ic]->{KEY}=(split('\s+',$infile[$ivar]))[2];
-   $BIB[$ic]->{KEY} =~ s/,//g; 
-   #print "$ic |TYP|$BIB[$ic]->{TYPE}\n";
-   #print "$ic |KEY|$BIB[$ic]->{KEY}\n";
+   $BIB[$ID][$ic]->{TYPE}=$TYP;
+   $BIB[$ID][$ic]->{KEY}=(split('\s+',$infile[$ivar]))[2];
+   $BIB[$ID][$ic]->{KEY} =~ s/,//g; 
+   #print "$ic |TYP|$BIB[$ID][$ic]->{TYPE}\n";
+   #print "$ic |KEY|$BIB[$ID][$ic]->{KEY}\n";
   }
   #
   if (substr("$infile[$ivar]",0,1) =~ "}") 
   {
-   print $fh Dumper $BIB[$ic];
+   if ($dump) {print $fh Dumper $BIB[$ID][$ic]};
    undef $new_entry;
   };
   #
@@ -65,16 +66,21 @@ sub DUMP_it{
   {
     if ("$infile[$ivar]" =~ "="){
      $FIELD=(split('\s+',$infile[$ivar]))[1];
+     $FIELD=ucfirst "$FIELD" ;
      $VAL=(split('\=',$infile[$ivar]))[1];
-     $VAL =~ s/ {//g;
+     $VAL =~ s/{//g;
+     $VAL =~ s/},//g;
      $VAL =~ s/}//g;
-     $VAL =~ s/,//g;
-     $BIB[$ic]->{$FIELD}=$VAL;
-     #print "$ic |$FIELD|$BIB[$ic]->{$FIELD}\n";
+     #substr ($VAL,0,2)=" ";
+     #substr ($VAL,-2,2)=" ";
+     $VAL =~ s/^\s+|\s+$//g;
+     $BIB[$ID][$ic]->{$FIELD}=$VAL;
+     #print "$ic |$FIELD|$BIB[$ID][$ic]->{$FIELD}\n";
     };
   }
   #
  }
-close $fh or die "Can't close '$file': $!";
+ $NBIB[$ID]=$ic;
+ if ($dump) {close $fh or die "Can't close '$file': $!"};
 }
 1;
