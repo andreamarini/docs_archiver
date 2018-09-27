@@ -25,6 +25,7 @@
 #
 # SYSTEM
 use Getopt::Long;
+use Encode;
 use File::Find;
 use File::Copy;
 use File::Basename;
@@ -36,18 +37,22 @@ use Cwd 'abs_path';
 #
 # LIBs 
 #use DEFAULTs;
+use UTILS_docs;
 use UTILS;
 use OPTIONS;
-#
-#use USER_pars_report;
 #
 # I/O 
 use PRINT_it;
 use DUMP_it;
 use DUMPER_io;
+use WRITE_the_bib;
 #
 # Operations
+use FIX_it;
 use ADD_it;
+#
+# Functions
+use prompt;
 #
 #use DB_rebuild;
 #use DB_init;
@@ -85,5 +90,4 @@ use ADD_it;
 #use PLOT_utils;
 #
 #use functions;
-#use prompt;
 #

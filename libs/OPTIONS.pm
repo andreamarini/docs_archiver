@@ -26,7 +26,9 @@ sub OPTIONS{
             "i=s"            => \$in_bib_file,
             "o=s"            => \$out_bib_file,
             "d"              => \$dump,
-            "s=s"            => \$search) or die;
+            "fix"            => \$fix,
+            "view"           => \$view,
+            "k=s"            => \$key) or die;
 sub usage {
 
  print <<EndOfUsage
@@ -40,7 +42,10 @@ sub usage {
                    -i      [FILE]          INPUT bib file
                    -o      [FILE]          OUTPUT bib file
                    -d                      Dump contents
+                   -fix                    Fix the INPUT bib file
                    -s      [PATTERNS]      Search
+                   -k      [PATT1,PATT2]   Keys
+                   -v                      View
 
 EndOfUsage
   ;

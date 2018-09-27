@@ -33,6 +33,9 @@ do "$SRC/libs/MODULES.pl";
 #
 print "\n Docs Archiver version $version ";
 #
+my $len= length($view);
+if ($len eq 0) {$view="yes"};
+#
 # CMD line
 &OPTIONS();
 #
@@ -44,14 +47,27 @@ if($help or not $in_bib_file){ &usage };
 # Dump in
 #
 if ($in_bib_file)  {&DUMP_it($in_bib_file,0)};
-print "\n\n Read $NBIB[0] entries from $in_bib_file\n";
+print "\n\n Read ".($NBIB[0])." entry(ies) from $in_bib_file\n";
 #
 # Dump out and add in
 #
-if ($out_bib_file) {
+if ($out_bib_file and not $fix) {
  &DUMP_it($out_bib_file,1);
- print " Read $NBIB[1] entries from $out_bib_file\n";
+ print "\n\n Read ".($NBIB[1])." entry(ies) from $out_bib_file\n";
  &ADD_it;
+}
+#
+# Repair 
+#
+if ($out_bib_file and $fix) {
+ &FIX_it(0);
+}
+#
+# VIEW
+#
+if ($view){
+ print "\n\n";
+ &VIEW;
 }
 #
 # JOB related operations

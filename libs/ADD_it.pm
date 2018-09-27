@@ -23,28 +23,34 @@
 #
 sub ADD_it{
  #
- print "\n";
+ my $result;
+ my @founds;
+ my @matches;
+ my $to_add=0;
+ print "\n BIB entries to be added\n\n";
+ if ($key) 
+ {
+  @founds=&FIND_bib_element_using_KEY(0,$key);
+ }
  #
- for (my $i1 = 0; $i1 < $NBIB[0]; $i1 = $i1 + 1){
-  #print "$i1\n";
-  my $found=0;
-  for (my $i2 = 0; $i2 < $NBIB[1]; $i2 = $i2 + 1){
-    if ("$BIB[0][$i1]->{File}" eq "$BIB[1][$i2]->{File}") 
-    {
-      #print "$BIB[0][$i1]->{File} $BIB[1][$i2]->{File}\n";
-      $found=$i2+1;
-      break;
-    }
-  }
-  if ($found) {
-   #print "$i1=$found\n";
-   undef $found;
-  }else{
-   $i3=$i1-1;
+ for (my $i1 = 1; $i1 <= $NBIB[0]; $i1 = $i1 + 1){
+  my $if1=&FIND_bib_element_using_VAL(1,"Doi","$BIB[0][$i1]->{Doi}");
+  my $if2=&FIND_bib_element_using_VAL(1,"Title","$BIB[0][$i1]->{Title}");
+  if (    $key) {@matches = grep { /\b$i1\b/ } @founds};
+  if (not $key) {@matches = qw(1)};
+  if (not $if1 and not $if2 and @matches){
    &PRINT_it(0,$i1,"stdlog");
-   #print " $i3 $BIB[0][$i1]->{File} not found\n";
+   $result=&prompt_yn("Add this entry?");
+   if ($result eq "y") 
+   {
+    $to_add=1;
+    $NBIB[1]=$NBIB[1]+1;
+    %{$BIB[1][$NBIB[1]]}= %{$BIB[0][$i1]};
+   }
   };
  }
+ #
+ if ($to_add) {&WRITE_the_bib(1)};
  #
 }
 1;

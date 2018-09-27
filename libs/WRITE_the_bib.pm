@@ -21,25 +21,31 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 # MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 #
-sub PRINT_it{
+sub WRITE_the_bib{
  #
- my ($ID,$ivar,$file) = @_;
+ my $file=$out_bib_file;
  #
- my $stdout = *STDOUT;
- if (not $file eq "stdlog") { 
-  open $fh, '>>', "$file" or die "Can't write '$file': $!";
-  $stdout=$fh;
+ &command("cp    $out_bib_file $out_bib_file.SAVE");
+ &command("rm -f $out_bib_file");
+ #
+ open $fh, '>>', "$file" or die "Can't write '$file': $!";
+ print $fh "% Encoding: UTF-8\n";
+ close $fh or die "Can't close '$file': $!";
+ #
+ my ($ID) = @_;
+ for (my $i1 = 1; $i1 <= $NBIB[$ID]; $i1 = $i1 + 1){
+  &PRINT_it($ID,$i1,$file);
  }
- #
- print $stdout "@".$BIB[$ID][$ivar]->{TYPE}."{".$BIB[$ID][$ivar]->{KEY}.",\n";
- foreach my $var(keys %{$BIB[$ID][$ivar]}){
-  if ($var eq "KEY") {next};
-  if ($var eq "TYPE") {next};
-  print $stdout "  $var \t = {$BIB[$ID][$ivar]{$var}},\n";
+ open $fh, '>>', "$file" or die "Can't write '$file': $!";
+ for (my $i1 = 0; $i1 <= $NCOMMENT[1]; $i1 = $i1 + 1){
+  print  $fh $COMMENT[1][$i1]
  }
- print $stdout "}\n";
- #
- if (not $file eq "stdlog") { close $fh or die "Can't close '$file': $!"};
+ print $fh "\n\@Comment{jabref-meta: groupstree:\n0 AllEntriesGroup:;";
+ for (my $i1 = 0; $i1 < $NGRP[1]; $i1 = $i1 + 1){
+  print $fh  "\n$GRP[1][$i1]->{LEVEL} ExplicitGroup:$GRP[1][$i1]->{NAME}\\;0\\;;";
+ }
+ print $fh  "\n}";
+ close $fh or die "Can't close '$file': $!";
  #
 }
 1;

@@ -21,25 +21,12 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 # MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 #
-sub PRINT_it{
- #
- my ($ID,$ivar,$file) = @_;
- #
- my $stdout = *STDOUT;
- if (not $file eq "stdlog") { 
-  open $fh, '>>', "$file" or die "Can't write '$file': $!";
-  $stdout=$fh;
+sub FIX_it{
+ my ($ID) = @_;
+ for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
+  my @founds=&FIND_bib_element_using_VAL(0,"KEY",$BIB[0][$i1]->{KEY});
+  print "\n$i1 @founds\n";
  }
- #
- print $stdout "@".$BIB[$ID][$ivar]->{TYPE}."{".$BIB[$ID][$ivar]->{KEY}.",\n";
- foreach my $var(keys %{$BIB[$ID][$ivar]}){
-  if ($var eq "KEY") {next};
-  if ($var eq "TYPE") {next};
-  print $stdout "  $var \t = {$BIB[$ID][$ivar]{$var}},\n";
- }
- print $stdout "}\n";
- #
- if (not $file eq "stdlog") { close $fh or die "Can't close '$file': $!"};
  #
 }
 1;

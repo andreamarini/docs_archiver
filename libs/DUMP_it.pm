@@ -25,62 +25,106 @@ sub DUMP_it{
  #
  my ($file,$ID) = @_;
  #
- my @TYPES = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual Comment abstract title InBook comment);
- my @FIELDS = qw(author title journal year volume pages file groups);
+ my @NOBIBS = qw(comment ExplicitGroup Comment);
+ my @BIB_TYPS = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual abstract title InBook article);
  #
  if ($dump) { open $fh, '>', "$file".".db" or die "Can't write '$file' db: $!"};
  #
  my $infile_data;
+ my $ig=-1;
  my $ic=-1;
+ my $ibib=0;
  my $new_entry=0;
  $infile_data = &read_file($file);
  my @infile=split(/\n/,$infile_data);
  my $size = scalar @infile;
  for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1){
   #
+  chomp($infile[$ivar]);
+  #
+  if (substr("$infile[$ivar]",0,8) eq "\@Comment") {
+   if ($infile[$ivar] =~ /groupstree/)
+   {
+    for ($ivp = $ivar+2; $ivp < $size; $ivp = $ivp + 1)
+    {
+     if ($infile[$ivp] =~ /ExplicitGroup/) 
+     { 
+       if ($ig >= 0) 
+       {
+        $str =~ s/\\//g;
+        $GRP[$ID][$ig]->{LEVEL} = substr("$str",0,1);
+        my $n=16;
+        $str =~ s/^.{$n}//s;
+        $GRP[$ID][$ig]->{NAME}=(split(";",$str))[0];
+        my $n=length($GRP[$iD][$ig]->{NAME})+3;
+        $str =~ s/^.{$n}//s;
+        $str =~ s/;/ /g;
+        $GRP[$ID][$ig]->{MEMBERS} = $str;
+        #print "\n $ID $ig L=$GRP[$ID][$ig]->{LEVEL} N=$GRP[$ID][$ig]->{NAME} M=$GRP[$ID][$ig]->{MEMBERS}\n";
+       }
+       $ig=$ig+1;
+       $str = "";
+     }
+     $str = $str.$infile[$ivp];
+     $NGRP[$ID]=$ig;
+    }
+   }else{
+    $ic=$ic+1;
+    $COMMENT[$ID][$ic]=$infile[$ivar];
+    $NCOMMENT[$ID]=$ic;
+   }
+  }
   if (substr("$infile[$ivar]",0,1) =~ "@") {
    $infile[$ivar] =~ s/@/ /g; 
    $infile[$ivar] =~ s/{/ /g; 
    $TYP=(split(" ",$infile[$ivar]))[0];
    chomp($TYP);
-   my @matches = grep { /$TYP/ } @TYPES;
+   my @matches = grep { /$TYP/ } @BIB_TYPS;
    if (!@matches){
-    print "TYPR $TYP unlisted \n";
+    #print "TYPR $TYP unlisted \n";
     next};
-   $ic=$ic+1;
+   $ibib=$ibib+1;
    $new_entry=1;
-   $BIB[$ID][$ic]->{TYPE}=$TYP;
-   $BIB[$ID][$ic]->{KEY}=(split('\s+',$infile[$ivar]))[2];
-   $BIB[$ID][$ic]->{KEY} =~ s/,//g; 
-   #print "$ic |TYP|$BIB[$ID][$ic]->{TYPE}\n";
-   #print "$ic |KEY|$BIB[$ID][$ic]->{KEY}\n";
+   $BIB[$ID][$ibib]->{TYPE}=$TYP;
+   $BIB[$ID][$ibib]->{KEY}=(split('\s+',$infile[$ivar]))[2];
+   $BIB[$ID][$ibib]->{KEY} =~ s/,//g; 
   }
   #
   if (substr("$infile[$ivar]",0,1) =~ "}") 
   {
-   if ($dump) {print $fh Dumper $BIB[$ID][$ic]};
+   if ($dump) {print $fh Dumper $BIB[$ID][$ibib]};
    undef $new_entry;
   };
   #
   if ($new_entry)
   {
-    if ("$infile[$ivar]" =~ "="){
-     $FIELD=(split('\s+',$infile[$ivar]))[1];
-     $FIELD=ucfirst "$FIELD" ;
-     $VAL=(split('\=',$infile[$ivar]))[1];
-     $VAL =~ s/{//g;
-     $VAL =~ s/},//g;
-     $VAL =~ s/}//g;
-     #substr ($VAL,0,2)=" ";
-     #substr ($VAL,-2,2)=" ";
-     $VAL =~ s/^\s+|\s+$//g;
-     $BIB[$ID][$ic]->{$FIELD}=$VAL;
-     #print "$ic |$FIELD|$BIB[$ID][$ic]->{$FIELD}\n";
-    };
+   if ("$infile[$ivar]" =~ "="){
+    $FIELD=(split('\=',$infile[$ivar]))[0];
+    $FIELD=ucfirst "$FIELD";
+    $VAL=(split('\=',$infile[$ivar]))[1];
+    $VAL =~ s/{//g;
+    $VAL =~ s/},//g;
+    $VAL =~ s/}//g;
+    if (not substr("$infile[$ivar]",-2,2) =~ "}," and not substr("$infile[$ivar]",-1,1) =~ "}") 
+    { 
+     for ($ivp = $ivar+1; $ivp < $size; $ivp = $ivp + 1){
+      my $V_more=$infile[$ivp];
+      $V_more =~ s/{//g;
+      $V_more =~ s/},//g;
+      $V_more =~ s/}//g;
+      $V_more =~ s/^\s+|\s+$//g;
+      $VAL = $VAL." ".$V_more;
+      if (substr("$infile[$ivp]",-2,2) =~ "}," or substr("$infile[$ivp]",-1,1) =~ "}") {last}; 
+     }
+     $ivar=$ivp;
+    }
+    $VAL =~ s/^\s+|\s+$//g;
+    $BIB[$ID][$ibib]->{$FIELD}=$VAL;
+   };
   }
   #
  }
- $NBIB[$ID]=$ic;
+ $NBIB[$ID]=$ibib;
  if ($dump) {close $fh or die "Can't close '$file': $!"};
 }
 1;
