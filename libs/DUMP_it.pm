@@ -101,6 +101,7 @@ sub DUMP_it{
    if ("$infile[$ivar]" =~ "="){
     $FIELD=(split('\=',$infile[$ivar]))[0];
     $FIELD=ucfirst "$FIELD";
+    $FIELD =~ s/^\s+|\s+$//g;
     $VAL=(split('\=',$infile[$ivar]))[1];
     $VAL =~ s/{//g;
     $VAL =~ s/},//g;

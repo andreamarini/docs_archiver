@@ -24,8 +24,11 @@
 sub FIX_it{
  my ($ID) = @_;
  for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
-  my @founds=&FIND_bib_element_using_VAL(0,"KEY",$BIB[0][$i1]->{KEY});
-  print "\n$i1 @founds\n";
+  foreach my $var(keys %{$BIB[$ID][$i1]}){
+   if (not $var eq "file") {next};
+   $BIB[$ID][$i1]{$var} =~ s/home\/marini\/Desktop\/DATABASE\/PAPERS/$PAPERS_db/g;
+   $BIB[$ID][$i1]{$var} =~ s/PAPERS/$PAPERS_db/g;
+  }
  }
  #
 }

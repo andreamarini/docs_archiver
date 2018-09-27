@@ -61,6 +61,7 @@ if ($out_bib_file and not $fix) {
 #
 if ($out_bib_file and $fix) {
  &FIX_it(0);
+ &WRITE_the_bib(0);
 }
 #
 # VIEW

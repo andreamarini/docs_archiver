@@ -25,7 +25,7 @@ sub WRITE_the_bib{
  #
  my $file=$out_bib_file;
  #
- &command("cp    $out_bib_file $out_bib_file.SAVE");
+ if (-f $out_bib_file) {&command("cp    $out_bib_file $out_bib_file.SAVE")};
  &command("rm -f $out_bib_file");
  #
  open $fh, '>>', "$file" or die "Can't write '$file': $!";
@@ -36,13 +36,17 @@ sub WRITE_the_bib{
  for (my $i1 = 1; $i1 <= $NBIB[$ID]; $i1 = $i1 + 1){
   &PRINT_it($ID,$i1,$file);
  }
+ #
+ my $ID_now=1;
+ if ($fix) {$ID_now=0};
+ #
  open $fh, '>>', "$file" or die "Can't write '$file': $!";
- for (my $i1 = 0; $i1 <= $NCOMMENT[1]; $i1 = $i1 + 1){
-  print  $fh $COMMENT[1][$i1]
+ for (my $i1 = 0; $i1 <= $NCOMMENT[$ID_now]; $i1 = $i1 + 1){
+  print  $fh $COMMENT[$ID_now][$i1]
  }
  print $fh "\n\@Comment{jabref-meta: groupstree:\n0 AllEntriesGroup:;";
- for (my $i1 = 0; $i1 < $NGRP[1]; $i1 = $i1 + 1){
-  print $fh  "\n$GRP[1][$i1]->{LEVEL} ExplicitGroup:$GRP[1][$i1]->{NAME}\\;0\\;;";
+ for (my $i1 = 0; $i1 < $NGRP[$ID_now]; $i1 = $i1 + 1){
+  print $fh  "\n$GRP[$ID_now][$i1]->{LEVEL} ExplicitGroup:$GRP[$ID_now][$i1]->{NAME}\\;0\\;;";
  }
  print $fh  "\n}";
  close $fh or die "Can't close '$file': $!";
