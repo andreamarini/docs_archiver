@@ -38,6 +38,7 @@ sub ADD_it{
   my $if2=&FIND_bib_element_using_VAL(1,"Title","$BIB[0][$i1]->{Title}");
   if (    $key) {@matches = grep { /\b$i1\b/ } @founds};
   if (not $key) {@matches = qw(1)};
+print "$BIB[0][$i1]->{Doi} $if1 $if2";
   if (not $if1 and not $if2 and @matches){
    if ($group) {$BIB[0][$i1]->{groups}=$group};
    if ($pdf)   {$BIB[0][$i1]->{file}=":$PAPERS_db/$pdf:PDF"};
@@ -49,7 +50,7 @@ sub ADD_it{
     $NBIB[1]=$NBIB[1]+1;
     %{$BIB[1][$NBIB[1]]}= %{$BIB[0][$i1]};
    }
-  };
+  }elsif ($if1) {print "Entry found\n";&PRINT_it(1,$if1-1,"stdlog")};
  }
  #
  if ($to_add) {

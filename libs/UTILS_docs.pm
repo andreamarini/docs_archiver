@@ -77,7 +77,8 @@ sub VIEW_groups{
    }
   }else{$list=1};
   my $str='  ' x $GRP[$ID][$i1]->{LEVEL};
-  if ($list) {print $str." $GRP[$ID][$i1]->{NAME}\n"};
+  if ($list and not $key) {print $str." $GRP[$ID][$i1]->{NAME}\n"};
+  if ($list and     $key) {print $str." $GRP[$ID][$i1]->{NAME} (MASTER is $GRP[$ID][$i1]->{MASTER})\n"};
  }
  exit;
 }

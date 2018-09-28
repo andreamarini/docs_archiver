@@ -42,6 +42,10 @@ sub DUMP_it{
   #
   chomp($infile[$ivar]);
   $infile[$ivar] =~ s/\r//g;
+  $infile[$ivar] =~ s/="/= {/g;
+  $infile[$ivar] =~ s/",/},/g;
+ }
+ for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1){
   #
   if (substr("$infile[$ivar]",0,8) eq "\@Comment") {
    if ($infile[$ivar] =~ /grouping/)
