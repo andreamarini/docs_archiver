@@ -25,9 +25,10 @@ sub DUMP_it{
  #
  my ($file,$ID) = @_;
  #
- my @NOBIBS = qw(comment ExplicitGroup Comment);
+ my @NOBIBS = qw(comment StaticGroup Comment);
  my @BIB_TYPS = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual abstract title InBook article);
  #
+ if (not -f $file) {return};
  if ($dump) { open $fh, '>', "$file".".db" or die "Can't write '$file' db: $!"};
  #
  my $infile_data;
@@ -41,32 +42,27 @@ sub DUMP_it{
  for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1){
   #
   chomp($infile[$ivar]);
+  $infile[$ivar] =~ s/\r//g;
   #
   if (substr("$infile[$ivar]",0,8) eq "\@Comment") {
-   if ($infile[$ivar] =~ /groupstree/)
+   if ($infile[$ivar] =~ /grouping/)
    {
     for ($ivp = $ivar+2; $ivp < $size; $ivp = $ivp + 1)
     {
-     if ($infile[$ivp] =~ /ExplicitGroup/) 
+     if ($infile[$ivp] =~ /StaticGroup/) 
      { 
-       if ($ig >= 0) 
-       {
-        $str =~ s/\\//g;
-        $GRP[$ID][$ig]->{LEVEL} = substr("$str",0,1);
-        my $n=16;
-        $str =~ s/^.{$n}//s;
-        $GRP[$ID][$ig]->{NAME}=(split(";",$str))[0];
-        my $n=length($GRP[$iD][$ig]->{NAME})+3;
-        $str =~ s/^.{$n}//s;
-        $str =~ s/;/ /g;
-        $GRP[$ID][$ig]->{MEMBERS} = $str;
-        #print "\n $ID $ig L=$GRP[$ID][$ig]->{LEVEL} N=$GRP[$ID][$ig]->{NAME} M=$GRP[$ID][$ig]->{MEMBERS}\n";
-       }
-       $ig=$ig+1;
-       $str = "";
+      $ig=$ig+1;
+      $NGRP[$ID]=$ig;
+      $str=$infile[$ivp];
+      $str =~ s/\\//g;
+      $GRP[$ID][$ig]->{LEVEL} = substr("$str",0,1);
+      my $n=14;
+      $str =~ s/^.{$n}//s;
+      $GRP[$ID][$ig]->{NAME}=(split(";",$str))[0];
+      if ($GRP[$ID][$ig]->{LEVEL}==1) {$MASTER=$GRP[$ID][$ig]->{NAME}};
+      $GRP[$ID][$ig]->{MASTER}=$MASTER;
+      #print "\n $ig L=$GRP[$ID][$ig]->{LEVEL} N=$GRP[$ID][$ig]->{NAME} M=$GRP[$ID][$ig]->{MASTER}\n";
      }
-     $str = $str.$infile[$ivp];
-     $NGRP[$ID]=$ig;
     }
    }else{
     $ic=$ic+1;

@@ -39,22 +39,47 @@ sub FIND_bib_element_using_KEY{
  ($ID,$KEY)=@_;
  my $found;
  my @founds;
+ my $nf;
  my @keys=split(',',$KEY);
+ my $nk=scalar @keys;
  for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
-  $found=0;
-  foreach my $V1(keys %{$BIB[$ID][$i1]}){
-   foreach my $local_key (@keys){
+  $nf=0;
+  foreach my $local_key (@keys){
+   $found=0;
+   foreach my $V1(keys %{$BIB[$ID][$i1]}){
     if ("$V1" =~ /$local_key/i or "$BIB[$ID][$i1]{$V1}" =~ /$local_key/i) {
-     $found=$i1;
+     $found=1;
      break;
     }
    }
+   if ($found) {$nf=$nf+1};
   }
-  if ($found) {push @founds, $found};
+  if ($nf ==  scalar @keys) {push @founds, $i1};
  }
  #
  return @founds;
  #
+}
+sub VIEW_groups{
+ ($ID)=@_;
+ my $list;
+ my @keys;
+ if ($key) 
+ {
+  @keys=split(',',$key);
+ }
+ for (my $i1 = 0; $i1 < $NGRP[$ID]; $i1 = $i1 + 1){
+  undef $list;
+  if ($key) 
+  {
+   foreach my $local_key (@keys){
+    if ( $GRP[$ID][$i1]->{NAME} =~ /$local_key/i) {$list=1}
+   }
+  }else{$list=1};
+  my $str='  ' x $GRP[$ID][$i1]->{LEVEL};
+  if ($list) {print $str." $GRP[$ID][$i1]->{NAME}\n"};
+ }
+ exit;
 }
 sub VIEW{
  my @founds;

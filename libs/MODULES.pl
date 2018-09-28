@@ -25,7 +25,6 @@
 #
 # SYSTEM
 use Getopt::Long;
-use Encode;
 use File::Find;
 use File::Copy;
 use File::Basename;
@@ -36,7 +35,6 @@ use Time::HiRes qw(gettimeofday tv_interval);   # Not widely supported
 use Cwd 'abs_path';
 #
 # LIBs 
-#use DEFAULTs;
 use UTILS_docs;
 use UTILS;
 use OPTIONS;
@@ -53,41 +51,4 @@ use ADD_it;
 #
 # Functions
 use prompt;
-#
-#use DB_rebuild;
-#use DB_init;
-#use DB_load;
-#use DB_sync;
-#
-#use DB_add_line;
-#use DB_del_line;
-#
-#use FILES;
-#use FILE_actions;
-#
-#use REPO_delete_object;
-#use REPO_add_object;
-#use REPO_get_object;
-#use REPO_and_DB_add_object;
-#
-#use RUN_print;
-#use RUN_list;
-#
-#use JOB_utils;
-#
-# SCAN
-#use SCAN_driver;
-#use SCAN_select_files;
-#use SCAN_the_file;
-#
-# RUN
-#use RUN_driver;
-#
-# PLOT
-#use PLOT_driver;
-#use PLOT_load_data_from_user_file;
-#use PLOT_graph;
-#use PLOT_utils;
-#
-#use functions;
 #

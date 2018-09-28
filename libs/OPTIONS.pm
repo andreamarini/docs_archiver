@@ -24,10 +24,14 @@
 sub OPTIONS{
 &GetOptions("help"           => \$help,
             "i=s"            => \$in_bib_file,
+            "p=s"            => \$pdf,
+            "g:s"            => \$group,
             "o=s"            => \$out_bib_file,
+            "a"              => \$add,
             "d"              => \$dump,
             "fix"            => \$fix,
             "view"           => \$view,
+            "r=s"            => \$replace,
             "k=s"            => \$key) or die;
 sub usage {
 
@@ -41,9 +45,12 @@ sub usage {
 
                    -i      [FILE]          INPUT bib file
                    -o      [FILE]          OUTPUT bib file
+                   -p      [FILE]          PDF file
+                   -a                      Add (to the default DB)
                    -d                      Dump contents
                    -fix                    Fix the INPUT bib file
-                   -s      [PATTERNS]      Search
+                   -g      [PATTERN]       Group 
+                   -r      [PATTERN]       Replace
                    -k      [PATT1,PATT2]   Keys
                    -v                      View
 

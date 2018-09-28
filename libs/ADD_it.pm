@@ -39,6 +39,8 @@ sub ADD_it{
   if (    $key) {@matches = grep { /\b$i1\b/ } @founds};
   if (not $key) {@matches = qw(1)};
   if (not $if1 and not $if2 and @matches){
+   if ($group) {$BIB[0][$i1]->{groups}=$group};
+   if ($pdf)   {$BIB[0][$i1]->{file}=":$PAPERS_db/$pdf:PDF"};
    &PRINT_it(0,$i1,"stdlog");
    $result=&prompt_yn("Add this entry?");
    if ($result eq "y") 
@@ -50,7 +52,10 @@ sub ADD_it{
   };
  }
  #
- if ($to_add) {&WRITE_the_bib(1)};
+ if ($to_add) {
+  &WRITE_the_bib(1);
+  &command("cp $pdf $PAPERS_db");
+ };
  #
 }
 1;
