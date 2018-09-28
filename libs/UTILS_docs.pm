@@ -23,7 +23,7 @@
 sub FIND_bib_element_using_VAL{
  ($ID,$VAR,$VAL)=@_;
  my $found=0;
- for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
+ for (my $i1 = 0; $i1 <= $NBIB[$ID]; $i1 = $i1 + 1){
   foreach my $V1(keys %{$BIB[$ID][$i1]}){
    if ("$VAR" eq "$V1" and "$VAL" eq "$BIB[$ID][$i1]{$V1}") {
     $found=$i1+1;
@@ -42,7 +42,7 @@ sub FIND_bib_element_using_KEY{
  my $nf;
  my @keys=split(',',$KEY);
  my $nk=scalar @keys;
- for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
+ for (my $i1 = 0; $i1 <= $NBIB[$ID]; $i1 = $i1 + 1){
   $nf=0;
   foreach my $local_key (@keys){
    $found=0;
@@ -95,5 +95,19 @@ sub VIEW{
   }
  }
  exit;
+}
+sub UTILS_time
+{
+$numParameters = @_ ;
+@months = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
+my @days = qw(Sun Mon Tue Wed Thu Fri Sat Sun);
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+if ($hour < 10) {$hour="0$hour";};
+if ($min  < 10) {$min="0$min";};
+$current_year=$year+1900;
+$current_day=$mon*31+$mday;
+$mon=$mon+1;
+$_[0]="$current_year.$mon.$mday";
+#$_[0]="$months[$mon]-$mday-$days[$wday]";
 }
 1;

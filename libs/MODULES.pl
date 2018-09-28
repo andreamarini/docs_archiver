@@ -25,6 +25,7 @@
 #
 # SYSTEM
 use Getopt::Long;
+use Data::Dumper;
 use File::Find;
 use File::Copy;
 use File::Basename;
@@ -46,6 +47,7 @@ use DUMPER_io;
 use WRITE_the_bib;
 #
 # Operations
+use EMPTY;
 use FIX_it;
 use ADD_it;
 #

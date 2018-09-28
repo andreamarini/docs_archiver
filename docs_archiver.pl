@@ -22,14 +22,16 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 # MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 #
-# Initialize
-$version="0.1";
-local $| = 1;
-#
 # Paths
 $HOME=$ENV{"HOME"};
 do "$HOME/.docs_archiver/src.pl";
 do "$SRC/libs/MODULES.pl";
+#
+# Initialize
+$version="0.1";
+local $| = 1;
+&UTILS_time($date,$time);
+@BIB_TYPS = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual abstract title InBook article);
 #
 print "\n Docs Archiver version $version ";
 #
@@ -40,8 +42,19 @@ my $len= length($view);
 if ($len eq 0) {$view="yes"};
 $len= length($group);
 if ($len eq 0) {$group="yes"};
-if (not $in_bib_file          ) {$in_bib_file="/home/marini/Sources/docs_archiver/bib_files/bibliography.bib"};
-if (not $out_bib_file and $add) {$out_bib_file="/home/marini/Sources/docs_archiver/bib_files/bibliography.bib"};
+if ($out_bib_file  eq "press"     ) {$out_bib_file="/home/marini/Sources/docs_archiver/bib_files/press.bib"};
+if (not $in_bib_file  and not $add) {$in_bib_file="/home/marini/Sources/docs_archiver/bib_files/bibliography.bib"};
+if (not $out_bib_file and     $add) {$out_bib_file="/home/marini/Sources/docs_archiver/bib_files/bibliography.bib"};
+#
+# No input bib file? Create an empty one
+#
+if(not $in_bib_file and $pdf and $add)
+{ 
+ &EMPTY;
+ print "\n\n";
+ exit;
+};
+#
 #
 # Help
 if($help or not $in_bib_file){ &usage };
@@ -65,7 +78,7 @@ if ($out_bib_file and not $fix) {
 #
 if ($out_bib_file and $fix) {
  &FIX_it(0);
- &WRITE_the_bib(0);
+ &WRITE_the_bib($out_bib_file,0);
 }
 #
 # VIEW

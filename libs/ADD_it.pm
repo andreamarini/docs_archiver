@@ -53,7 +53,7 @@ sub ADD_it{
  }
  #
  if ($to_add) {
-  &WRITE_the_bib(1);
+  &WRITE_the_bib($out_bib_file,1);
   &command("cp $pdf $PAPERS_db");
  };
  #

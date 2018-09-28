@@ -26,7 +26,6 @@ sub DUMP_it{
  my ($file,$ID) = @_;
  #
  my @NOBIBS = qw(comment StaticGroup Comment);
- my @BIB_TYPS = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual abstract title InBook article);
  #
  if (not -f $file) {return};
  if ($dump) { open $fh, '>', "$file".".db" or die "Can't write '$file' db: $!"};
@@ -75,7 +74,7 @@ sub DUMP_it{
    $infile[$ivar] =~ s/{/ /g; 
    $TYP=(split(" ",$infile[$ivar]))[0];
    chomp($TYP);
-   my @matches = grep { /$TYP/ } @BIB_TYPS;
+   my @matches = grep { /$TYP/i } @BIB_TYPS;
    if (!@matches){
     #print "TYPR $TYP unlisted \n";
     next};

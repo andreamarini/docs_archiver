@@ -23,7 +23,7 @@
 #
 sub WRITE_the_bib{
  #
- my $file=$out_bib_file;
+ my ($file,$ID)=@_;
  #
  if (-f $out_bib_file) {&command("cp    $out_bib_file $out_bib_file.SAVE")};
  &command("rm -f $out_bib_file");
@@ -32,7 +32,6 @@ sub WRITE_the_bib{
  print $fh "% Encoding: UTF-8\n";
  close $fh or die "Can't close '$file': $!";
  #
- my ($ID) = @_;
  for (my $i1 = 1; $i1 <= $NBIB[$ID]; $i1 = $i1 + 1){
   &PRINT_it($ID,$i1,$file);
  }
