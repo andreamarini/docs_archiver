@@ -43,11 +43,11 @@ if ($len eq 0) {$view="yes"};
 $len= length($group);
 if ($len eq 0) {$group="yes"};
 if ($out_bib_file  eq "press"     ) {
- $out_bib_file="/home/marini/Sources/docs_archiver/bib_files/press.bib";
+ $out_bib_file="/home/marini/Domande-Documenti/Personal/Letture/press.bib";
  $PAPERS_db="/home/marini/Domande-Documenti/Personal/Letture/DATABASE";
 };
-if (not $in_bib_file  and not $add) {$in_bib_file="/home/marini/Sources/docs_archiver/bib_files/bibliography.bib"};
-if (not $out_bib_file and     $add) {$out_bib_file="/home/marini/Sources/docs_archiver/bib_files/bibliography.bib"};
+if (not $in_bib_file  and not $add) {$in_bib_file="/home/marini/Papers_and_Results/bibliography.bib"};
+if (not $out_bib_file and     $add) {$out_bib_file="/home/marini/Papers_and_Results/bibliography.bib"};
 #
 # No input bib file? Create an empty one
 #
