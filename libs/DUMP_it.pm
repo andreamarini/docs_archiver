@@ -23,7 +23,7 @@
 #
 sub DUMP_it{
  #
- my ($file,$ID) = @_;
+ my ($file,$pdf_file,$ID,$clean_first) = @_;
  #
  my @NOBIBS = qw(comment StaticGroup Comment);
  #
@@ -34,6 +34,15 @@ sub DUMP_it{
  my $ig=-1;
  my $ic=-1;
  my $ibib=0;
+ if (not $clean_first)
+ {
+  $ig=$NGRP[$ID]-1;
+  $ic=$NCOMMENT[$ID]-1;
+  $ibib=$NBIB[$ID];
+  if ($dump) { open $fh, '>>', "$file".".db" or die "Can't write '$file' db: $!"};
+ }else{
+  if ($dump) { open $fh, '>', "$file".".db" or die "Can't write '$file' db: $!"};
+ }
  my $new_entry=0;
  $infile_data = &read_file($file);
  my @infile=split(/\n/,$infile_data);
@@ -84,6 +93,7 @@ sub DUMP_it{
     next};
    $ibib=$ibib+1;
    $new_entry=1;
+   if ($pdf_file) {$BIB[$ID][$ibib]->{PDF}=$pdf_file};
    $BIB[$ID][$ibib]->{TYPE}=$TYP;
    $BIB[$ID][$ibib]->{KEY}=(split('\s+',$infile[$ivar]))[2];
    $BIB[$ID][$ibib]->{KEY} =~ s/,//g; 

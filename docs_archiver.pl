@@ -28,7 +28,7 @@ do "$HOME/.docs_archiver/src.pl";
 do "$SRC/libs/MODULES.pl";
 #
 # Initialize
-$version="0.1";
+$version="1.0";
 local $| = 1;
 &UTILS_time($date,$time);
 @BIB_TYPS = qw(Article Book Conference Misc Unpublished PhdThesis InCollection Other Manual abstract title InBook article);
@@ -64,13 +64,29 @@ if($help or not $in_bib_file){ &usage };
 #
 # Dump in
 #
-if ($in_bib_file)  {&DUMP_it($in_bib_file,0)};
+if ($in_bib_file) {
+ if (-f $in_bib_file) {
+  if ($pdf and -f $pdf) {&DUMP_it($in_bib_file,$pdf,0,1)}
+  if (not $pdf        ) {&DUMP_it($in_bib_file,0,0,1)}
+ }
+ if (-d $in_bib_file) {
+  opendir (DIR, $in_bib_file) or die $!;
+   while (my $bib = readdir(DIR)) {
+    if (not $bib =~ /.bib/) {next};
+    $pdf_file = "$bib";
+    $pdf_file =~ s/.bibtex/.pdf/g;
+    $pdf_file =~ s/.bib/.pdf/g;
+    if (    -f "$in_bib_file/$pdf_file") {&DUMP_it("$in_bib_file/$bib","$pdf_file",0,0)};
+    if (not -f "$in_bib_file/$pdf_file") {&DUMP_it("$in_bib_file/$bib",0,0,0)};
+   }
+ }
+};
 print "\n\n Read ".($NBIB[0])." entry(ies) from $in_bib_file\n";
 #
 # Dump out and add in
 #
 if ($out_bib_file and not $fix) {
- &DUMP_it($out_bib_file,1);
+ &DUMP_it($out_bib_file,0,1,1);
  print "\n\n Read ".($NBIB[1])." entry(ies) from $out_bib_file\n";
  &ADD_it;
 }elsif ($add){

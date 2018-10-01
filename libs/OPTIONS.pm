@@ -42,10 +42,9 @@ sub usage {
 
    where <ARGS> must include at least one of:
                    -h                      This help
-
-                   -i      [FILE]          INPUT bib file
-                   -o      [FILE]          OUTPUT bib file
-                   -p      [FILE]          PDF file
+                   -i      [FILE/DIR]      INPUT bib file/directory
+                   -o      [FILE]          OUTPUT bib file/directory
+                   -p      [FILE/DIR]      PDF file
                    -a                      Add (to the default DB)
                    -d                      Dump contents
                    -fix                    Fix the INPUT bib file

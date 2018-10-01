@@ -38,14 +38,17 @@ sub ADD_it{
   my $if2=&FIND_bib_element_using_VAL(1,"Title","$BIB[0][$i1]->{Title}");
   if (    $key) {@matches = grep { /\b$i1\b/ } @founds};
   if (not $key) {@matches = qw(1)};
-print "$BIB[0][$i1]->{Doi} $if1 $if2";
   if (not $if1 and not $if2 and @matches){
    if ($group) {$BIB[0][$i1]->{groups}=$group};
-   if ($pdf)   {$BIB[0][$i1]->{file}=":$PAPERS_db/$pdf:PDF"};
+   if ($BIB[0][$i1]->{PDF})  {$BIB[0][$i1]->{file}=":$PAPERS_db/$BIB[0][$i1]->{PDF}:PDF"};
    &PRINT_it(0,$i1,"stdlog");
    $result=&prompt_yn("Add this entry?");
    if ($result eq "y") 
    {
+    if ($pdf) {
+     if (-f $pdf) {&command("cp '$BIB[0][$i1]->{PDF}' $PAPERS_db")};
+     if (-d $pdf) {&command("cp '$pdf/$BIB[0][$i1]->{PDF}' $PAPERS_db")};
+    }
     $to_add=1;
     $NBIB[1]=$NBIB[1]+1;
     %{$BIB[1][$NBIB[1]]}= %{$BIB[0][$i1]};
@@ -55,7 +58,6 @@ print "$BIB[0][$i1]->{Doi} $if1 $if2";
  #
  if ($to_add) {
   &WRITE_the_bib($out_bib_file,1);
-  &command("cp $pdf $PAPERS_db");
  };
  #
 }
