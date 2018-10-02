@@ -46,14 +46,15 @@ sub EMPTY{
  close $fh;
  $result=&prompt_yn("Possible TYPES are @BIB_TYPS. Continue?");
  if ($result eq "y") {
-  &command("vim $in_bib_file".".db");
-  open my $fh, '<', "$in_bib_file".".db" ;
+  my $file="$in_bib_file".".db";
+  &command("vim \"$file\"");
+  open my $fh, '<', "$file" ;
   my $vars;
    { local $/ = undef; $vars = <$fh>; }
    $BIB[0][1]= eval $vars;
   close $fh;
   &PRINT_it(0,1,"$in_bib_file");
  }
- &command("rm -f $in_bib_file".".db");
+ &command("rm -f '$file'");
 }
 1;

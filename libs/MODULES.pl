@@ -42,7 +42,8 @@ use OPTIONS;
 #
 # I/O 
 use PRINT_it;
-use DUMP_it;
+use DUMP_bib;
+use DUMP_ris;
 use DUMPER_io;
 use WRITE_the_bib;
 #

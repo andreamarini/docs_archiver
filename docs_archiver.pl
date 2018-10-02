@@ -42,7 +42,7 @@ my $len= length($view);
 if ($len eq 0) {$view="yes"};
 $len= length($group);
 if ($len eq 0) {$group="yes"};
-if ($out_bib_file  eq "press"     ) {
+if ($out_bib_file  =~ /press/     ) {
  $out_bib_file="/home/marini/Domande-Documenti/Personal/Letture/press.bib";
  $PAPERS_db="/home/marini/Domande-Documenti/Personal/Letture/DATABASE";
 };
@@ -66,8 +66,8 @@ if($help or not $in_bib_file){ &usage };
 #
 if ($in_bib_file) {
  if (-f $in_bib_file) {
-  if ($pdf and -f $pdf) {&DUMP_it($in_bib_file,$pdf,0,1)}
-  if (not $pdf        ) {&DUMP_it($in_bib_file,0,0,1)}
+  if ($pdf and -f $pdf) {&DUMP_bib($in_bib_file,$pdf,0,1)}
+  if (not $pdf        ) {&DUMP_bib($in_bib_file,0,0,1)}
  }
  if (-d $in_bib_file) {
   opendir (DIR, $in_bib_file) or die $!;
@@ -76,8 +76,8 @@ if ($in_bib_file) {
     $pdf_file = "$bib";
     $pdf_file =~ s/.bibtex/.pdf/g;
     $pdf_file =~ s/.bib/.pdf/g;
-    if (    -f "$in_bib_file/$pdf_file") {&DUMP_it("$in_bib_file/$bib","$pdf_file",0,0)};
-    if (not -f "$in_bib_file/$pdf_file") {&DUMP_it("$in_bib_file/$bib",0,0,0)};
+    if (    -f "$in_bib_file/$pdf_file") {&DUMP_bib("$in_bib_file/$bib","$pdf_file",0,0)};
+    if (not -f "$in_bib_file/$pdf_file") {&DUMP_bib("$in_bib_file/$bib",0,0,0)};
    }
  }
 };
@@ -86,7 +86,7 @@ print "\n\n Read ".($NBIB[0])." entry(ies) from $in_bib_file\n";
 # Dump out and add in
 #
 if ($out_bib_file and not $fix) {
- &DUMP_it($out_bib_file,0,1,1);
+ &DUMP_bib($out_bib_file,0,1,1);
  print "\n\n Read ".($NBIB[1])." entry(ies) from $out_bib_file\n";
  &ADD_it;
 }elsif ($add){

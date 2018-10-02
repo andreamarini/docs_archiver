@@ -21,13 +21,19 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 # MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 #
-sub DUMP_it{
+sub DUMP_bib{
  #
  my ($file,$pdf_file,$ID,$clean_first) = @_;
  #
+ if (not -f $file) {return};
+ #
+ if ($file =~ /.ris/) 
+ {
+  &DUMP_ris($file,$pdf_file,$ID);
+ }
+ #
  my @NOBIBS = qw(comment StaticGroup Comment);
  #
- if (not -f $file) {return};
  if ($dump) { open $fh, '>', "$file".".db" or die "Can't write '$file' db: $!"};
  #
  my $infile_data;
@@ -47,13 +53,13 @@ sub DUMP_it{
  $infile_data = &read_file($file);
  my @infile=split(/\n/,$infile_data);
  my $size = scalar @infile;
- for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1){
-  #
-  chomp($infile[$ivar]);
-  $infile[$ivar] =~ s/\r//g;
-  $infile[$ivar] =~ s/="/= {/g;
-  $infile[$ivar] =~ s/",/},/g;
- }
+ for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1)
+  {
+   chomp($infile[$ivar]);
+   $infile[$ivar] =~ s/\r//g;
+   $infile[$ivar] =~ s/="/= {/g;
+   $infile[$ivar] =~ s/",/},/g;
+  }
  for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1){
   #
   if (substr("$infile[$ivar]",0,8) eq "\@Comment") {

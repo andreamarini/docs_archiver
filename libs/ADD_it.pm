@@ -46,8 +46,8 @@ sub ADD_it{
    if ($result eq "y") 
    {
     if ($pdf) {
-     if (-f $pdf) {&command("cp '$BIB[0][$i1]->{PDF}' $PAPERS_db")};
-     if (-d $pdf) {&command("cp '$pdf/$BIB[0][$i1]->{PDF}' $PAPERS_db")};
+     if (-f $pdf) {&command("cp \"$BIB[0][$i1]->{PDF}\" $PAPERS_db")};
+     if (-d $pdf) {&command("cp \"$pdf/$BIB[0][$i1]->{PDF}\" $PAPERS_db")};
     }
     $to_add=1;
     $NBIB[1]=$NBIB[1]+1;
