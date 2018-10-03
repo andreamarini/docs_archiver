@@ -80,7 +80,6 @@ sub VIEW_groups{
   if ($list and not $key) {print $str." $GRP[$ID][$i1]->{NAME}\n"};
   if ($list and     $key) {print $str." $GRP[$ID][$i1]->{NAME} (MASTER is $GRP[$ID][$i1]->{MASTER})\n"};
  }
- exit;
 }
 sub VIEW{
  my @founds;

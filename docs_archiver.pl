@@ -102,12 +102,15 @@ if ($out_bib_file and $fix) {
 #
 # VIEW
 #
+if ($group)
+{
+ print "\n";
+ if (not $add) {&VIEW_groups(0)}
+}
+#
 if ($view){
  print "\n\n";
- if ($group)
-  {&VIEW_groups(0)}
- else
-  {&VIEW};
+ {&VIEW};
 }
 #
 print "\n\n";
