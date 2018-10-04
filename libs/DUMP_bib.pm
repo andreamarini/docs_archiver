@@ -30,6 +30,7 @@ sub DUMP_bib{
  if ($file =~ /.ris/) 
  {
   &DUMP_ris($file,$pdf_file,$ID);
+  return;
  }
  #
  my @NOBIBS = qw(comment StaticGroup Comment);
