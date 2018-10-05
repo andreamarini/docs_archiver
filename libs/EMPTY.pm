@@ -23,38 +23,60 @@
 #
 sub EMPTY{
  $in_bib_file=$pdf;
+ my $db="$in_bib_file".".db";
  $in_bib_file=~ s/.pdf/.bib/g;
- $BIB[0][1]->{TYPE}="article";
- $BIB[0][1]->{KEY}="$pdf";
- $BIB[0][1]->{KEY}=~ s/.pdf//g;
- $BIB[0][1]->{timestamp}="$date";
- $BIB[0][1]->{volume}="none";
- $BIB[0][1]->{year}=" ";
- $BIB[0][1]->{numpages}=" ";
- $BIB[0][1]->{doi}=" ";
- $BIB[0][1]->{publisher}=" ";
- $BIB[0][1]->{author}=" ";
- $BIB[0][1]->{month}=" ";
- $BIB[0][1]->{url}=" ";
- $BIB[0][1]->{issue}=" ";
- $BIB[0][1]->{journal}=" ";
- $BIB[0][1]->{title}=" ";
- $BIB[0][1]->{pages}=" ";
- $NBIB[0]=1;
- open $fh, '>', "$in_bib_file".".db" ;
+ $in_bib_file=~ s/.PDF/.bib/g;
+ if (not -f  $db) 
+ {
+  $BIB[0][1]->{TYPE}="article";
+  $BIB[0][1]->{KEY}="$pdf";
+  $BIB[0][1]->{KEY}=~ s/.pdf//g;
+  $BIB[0][1]->{KEY}=~ s/.PDF//g;
+  $BIB[0][1]->{KEY}=~ s/_/ /g;
+  $BIB[0][1]->{KEY}=~ s/-/ /g;
+  $BIB[0][1]->{timestamp}="$date";
+  $BIB[0][1]->{volume}="none";
+  $BIB[0][1]->{year}=" ";
+  $BIB[0][1]->{numpages}=" ";
+  $BIB[0][1]->{doi}=" ";
+  $BIB[0][1]->{publisher}=" ";
+  $BIB[0][1]->{author}=" ";
+  $BIB[0][1]->{month}=" ";
+  $BIB[0][1]->{url}=" ";
+  $BIB[0][1]->{issue}=" ";
+  $BIB[0][1]->{journal}=" ";
+  $BIB[0][1]->{title}="$pdf";
+  $BIB[0][1]->{pages}=" ";
+  $NBIB[0]=1;
+ }else{
+  open my $fh, '<', "$db" ;
+  my $vars;
+  { local $/ = undef; $vars = <$fh>; }
+  $BIB[0][1]= eval $vars;
+  close $fh;
+ }
+ @BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis);
+ print "\n\n Possible TYPES are:\n";
+ for $typ (@BIB_TYPS)
+ {
+   print "\t(".lcfirst(substr($typ,0,2)).") $typ\n"; 
+ }
+ $result=&prompt("Which one?");
+ for $typ (@BIB_TYPS)
+ {
+  if (lcfirst(substr($typ,0,2)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
+  elsif (lcfirst(substr($typ,0,1)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
+  #print "$result $BIB[0][1]->{TYPE}\n";
+ }
+ open $fh, '>', "$db" ;
  print $fh Dumper $BIB[0][1];
  close $fh;
- $result=&prompt_yn("Possible TYPES are @BIB_TYPS. Continue?");
- if ($result eq "y") {
-  my $file="$in_bib_file".".db";
-  &command("vim \"$file\"");
-  open my $fh, '<', "$file" ;
-  my $vars;
-   { local $/ = undef; $vars = <$fh>; }
-   $BIB[0][1]= eval $vars;
-  close $fh;
-  &PRINT_it(0,1,"$in_bib_file");
- }
- &command("rm -f '$file'");
+ &command("vim \"$db\"");
+ open my $fh, '<', "$db" ;
+ my $vars;
+  { local $/ = undef; $vars = <$fh>; }
+  $BIB[0][1]= eval $vars;
+ close $fh;
+ &PRINT_it(0,1,"$in_bib_file");
 }
 1;
