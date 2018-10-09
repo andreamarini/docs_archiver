@@ -26,14 +26,34 @@ sub EMPTY{
  my $db="$in_bib_file".".db";
  $in_bib_file=~ s/.pdf/.bib/g;
  $in_bib_file=~ s/.PDF/.bib/g;
- if (not -f  $db) 
+ #
+ # Try first to extract the doi
+ #
+ &command("pdftotext \"$pdf\" tmp.txt");
+ my $infile_data = &read_file("tmp.txt");
+ my @infile=split(/\n/,$infile_data);
+ &command("rm -f tmp.txt");
+ my $DOI=0;
+ foreach (@infile) { 
+  if ($_ =~ /DOI/) {
+   $BIB[0][1]->{url}=(split(/: /,$_))[1];
+   $DOI=1;
+  };
+ } 
+ if ($DOI) {
+  &command("$SRC/tools/doi2bib \"$BIB[0][1]->{url}\" > $in_bib_file");
+  &DUMP_bib($in_bib_file,$pdf,0,1);
+ }
+ #
+ if (-f $in_bib_file) 
  {
+  &PRINT_it(0,1,"stdlog");
+  exit;
+ }elsif (not -f $db){
   $BIB[0][1]->{TYPE}="article";
   $BIB[0][1]->{KEY}="$pdf";
   $BIB[0][1]->{KEY}=~ s/.pdf//g;
   $BIB[0][1]->{KEY}=~ s/.PDF//g;
-  $BIB[0][1]->{KEY}=~ s/_/ /g;
-  $BIB[0][1]->{KEY}=~ s/-/ /g;
   $BIB[0][1]->{timestamp}="$date";
   $BIB[0][1]->{volume}="none";
   $BIB[0][1]->{year}=" ";
@@ -45,33 +65,29 @@ sub EMPTY{
   $BIB[0][1]->{url}=" ";
   $BIB[0][1]->{issue}=" ";
   $BIB[0][1]->{journal}=" ";
-  $BIB[0][1]->{title}="$pdf";
+  $BIB[0][1]->{title}=$BIB[0][1]->{KEY};
+  $BIB[0][1]->{title}=~ s/_/ /g;
+  $BIB[0][1]->{title}=~ s/-/ /g;
   $BIB[0][1]->{pages}=" ";
   $NBIB[0]=1;
- }else{
-  open my $fh, '<', "$db" ;
-  my $vars;
-  { local $/ = undef; $vars = <$fh>; }
-  $BIB[0][1]= eval $vars;
+  @BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis);
+  print "\n\n Possible TYPES are:\n";
+  for $typ (@BIB_TYPS)
+  {
+    print "\t(".lcfirst(substr($typ,0,2)).") $typ\n"; 
+  }
+  $result=&prompt("Which one?");
+  for $typ (@BIB_TYPS)
+  {
+   if (lcfirst(substr($typ,0,2)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
+   elsif (lcfirst(substr($typ,0,1)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
+   #print "$result $BIB[0][1]->{TYPE}\n";
+  }
+  open $fh, '>', "$db" ;
+  print $fh Dumper $BIB[0][1];
   close $fh;
+  &command("vim \"$db\"");
  }
- @BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis);
- print "\n\n Possible TYPES are:\n";
- for $typ (@BIB_TYPS)
- {
-   print "\t(".lcfirst(substr($typ,0,2)).") $typ\n"; 
- }
- $result=&prompt("Which one?");
- for $typ (@BIB_TYPS)
- {
-  if (lcfirst(substr($typ,0,2)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
-  elsif (lcfirst(substr($typ,0,1)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
-  #print "$result $BIB[0][1]->{TYPE}\n";
- }
- open $fh, '>', "$db" ;
- print $fh Dumper $BIB[0][1];
- close $fh;
- &command("vim \"$db\"");
  open my $fh, '<', "$db" ;
  my $vars;
   { local $/ = undef; $vars = <$fh>; }

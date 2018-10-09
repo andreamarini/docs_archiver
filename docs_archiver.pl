@@ -55,7 +55,6 @@ if(not $in_bib_file and $pdf and $add)
 { 
  &EMPTY;
  print "\n\n";
- exit;
 };
 #
 #

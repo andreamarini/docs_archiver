@@ -73,11 +73,8 @@ sub DUMP_ris{
  if ($pdf_file) {$BIB[$ID][1]->{PDF}=$pdf_file};
  #
  &command("$SRC/tools/doi2bib \"$BIB[$ID][1]->{url}\" > tmp.bib");
- #
  &DUMP_bib("tmp.bib",$pdf_file,0,1);
- #
  &command("rm -f tmp.bib");
- #
  #&PRINT_it(0,1,"stdlog");
 }
 1;
