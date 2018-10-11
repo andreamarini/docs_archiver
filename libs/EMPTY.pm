@@ -41,8 +41,12 @@ sub EMPTY{
   };
  } 
  if ($DOI) {
-  &command("$SRC/tools/doi2bib \"$BIB[0][1]->{url}\" > $in_bib_file");
-  &DUMP_bib($in_bib_file,$pdf,0,1);
+  print "\n\n Found DOI:$BIB[0][1]->{url}\n\n";
+  $result=&prompt("Is it ok?");
+  if ($result =~ /y/) {
+   &command("$SRC/tools/doi2bib \"$BIB[0][1]->{url}\" > $in_bib_file");
+   &DUMP_bib($in_bib_file,$pdf,0,1);
+  }
  }
  #
  if (-f $in_bib_file) 
