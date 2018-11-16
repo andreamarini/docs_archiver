@@ -62,23 +62,48 @@ sub FIND_bib_element_using_KEY{
 }
 sub VIEW_groups{
  ($ID)=@_;
- my $list;
  my @keys;
  if ($key) 
  {
   @keys=split(',',$key);
  }
- for (my $i1 = 0; $i1 < $NGRP[$ID]; $i1 = $i1 + 1){
-  undef $list;
-  if ($key) 
-  {
+ if ($key) {
+  my $i_ref;
+  my @i_masters;
+  undef @i_masters;
+  for (my $i1 = 0; $i1 < $NGRP[$ID]; $i1 = $i1 + 1){
+   undef $i_ref;
    foreach my $local_key (@keys){
-    if ( $GRP[$ID][$i1]->{NAME} =~ /$local_key/i) {$list=1}
+    if ( $GRP[$ID][$i1]->{NAME} =~ /$local_key/i) 
+    {
+     $i_ref=$i1;
+    }
    }
-  }else{$list=1};
-  my $str='  ' x $GRP[$ID][$i1]->{LEVEL};
-  if ($list and not $key) {print $str." $GRP[$ID][$i1]->{NAME}\n"};
-  if ($list and     $key) {print $str." $GRP[$ID][$i1]->{NAME} (MASTER is $GRP[$ID][$i1]->{MASTER})\n"};
+   if ($i_ref){
+   #print "$i_ref $GRP[$ID][$i_ref]->{NAME} $GRP[$ID][$i_ref]->{LEVEL}\n";
+   illoop: for (my $il = 1; $il < $GRP[$ID][$i_ref]->{LEVEL} ; $il = $il + 1){
+     for (my $i2 = $i_ref; $i2 >= 0; $i2 = $i2 - 1){
+      if ( $GRP[$ID][$i2]->{LEVEL} == $il and "$GRP[$ID][$i2]->{MASTER}" eq "$GRP[$ID][$i_ref]->{MASTER}") {
+       $i_masters[$il-1]=$i2;
+       #print " $GRP[$ID][$i2]->{NAME} $GRP[$ID][$i2]->{LEVEL} -> $il\n";
+       next illoop;
+      }
+     }
+    }
+    for my $i_mas (@i_masters)
+    {
+     my $str='  ' x $GRP[$ID][$i_mas]->{LEVEL};
+     print $str." $GRP[$ID][$i_mas]->{NAME}\n";
+    }
+    my $str='  ' x $GRP[$ID][$i_ref]->{LEVEL};
+    print $str." $GRP[$ID][$i_ref]->{NAME}\n";
+   }
+  }
+ }else{
+  for (my $i1 = 0; $i1 < $NGRP[$ID]; $i1 = $i1 + 1){
+   my $str='  ' x $GRP[$ID][$i1]->{LEVEL};
+   print $str." $GRP[$ID][$i1]->{NAME}\n";
+  }
  }
 }
 sub VIEW{
