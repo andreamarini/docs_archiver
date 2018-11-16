@@ -29,6 +29,7 @@ sub OPTIONS{
             "o=s"            => \$out_bib_file,
             "a"              => \$add,
             "d"              => \$dump,
+            "c"              => \$clean,
             "fix"            => \$fix,
             "view"           => \$view,
             "r=s"            => \$replace,
@@ -45,6 +46,7 @@ sub usage {
                    -i      [FILE/DIR]      INPUT bib file/directory
                    -o      [FILE]          OUTPUT bib file/directory
                    -p      [FILE/DIR]      PDF file
+                   -c                      Clean the temporary files after coping
                    -a                      Add (to the default DB)
                    -d                      Dump contents
                    -fix                    Fix the INPUT bib file

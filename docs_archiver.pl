@@ -57,9 +57,8 @@ if(not $in_bib_file and $pdf and $add)
  print "\n\n";
 };
 #
-#
 # Help
-if($help or not $in_bib_file){ &usage };
+if($help or (not $in_bib_file and not $pdf)){ &usage };
 #
 # Dump in
 #

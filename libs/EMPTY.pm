@@ -41,9 +41,14 @@ sub EMPTY{
   };
  } 
  if ($DOI) {
-  print "\n\n Found DOI:$BIB[0][1]->{url}\n\n";
-  $result=&prompt("Is it ok?");
-  if ($result =~ /y/) {
+  print "\n\n DOI found is:$BIB[0][1]->{url}\n\n";
+  $result=&prompt("Is it ok (y/n/edit)?");
+  if ("$result" eq "y") {
+   &command("$SRC/tools/doi2bib \"$BIB[0][1]->{url}\" > $in_bib_file");
+   &DUMP_bib($in_bib_file,$pdf,0,1);
+  }elsif ("$result" eq "n"){
+  }else{
+   $BIB[0][1]->{url}="$result";
    &command("$SRC/tools/doi2bib \"$BIB[0][1]->{url}\" > $in_bib_file");
    &DUMP_bib($in_bib_file,$pdf,0,1);
   }
@@ -51,8 +56,8 @@ sub EMPTY{
  #
  if (-f $in_bib_file) 
  {
+  print "\n";
   &PRINT_it(0,1,"stdlog");
-  exit;
  }elsif (not -f $db){
   $BIB[0][1]->{TYPE}="article";
   $BIB[0][1]->{KEY}="$pdf";

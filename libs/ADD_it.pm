@@ -52,7 +52,11 @@ sub ADD_it{
     $to_add=1;
     $NBIB[1]=$NBIB[1]+1;
     %{$BIB[1][$NBIB[1]]}= %{$BIB[0][$i1]};
-   }
+    if ($clean) {
+     &command("rm -f \"$BIB[0][$i1]->{PDF}\"");
+     &command("rm -f \"$in_bib_file\"");
+    };
+   }else{undef $clean};
   }elsif ($if1) {print "Entry found\n";&PRINT_it(1,$if1-1,"stdlog")};
  }
  #
