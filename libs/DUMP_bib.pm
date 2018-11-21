@@ -68,14 +68,15 @@ sub DUMP_bib{
    {
     for ($ivp = $ivar+2; $ivp < $size; $ivp = $ivp + 1)
     {
-     if ($infile[$ivp] =~ /StaticGroup/) 
+     if ($infile[$ivp] =~ /StaticGroup/ or $infile[$ivp] =~ /ExplicitGroup/) 
      { 
+      my $n=14;
+      if ($infile[$ivp] =~ /ExplicitGroup/) {$n=16};
       $ig=$ig+1;
       $NGRP[$ID]=$ig;
       $str=$infile[$ivp];
       $str =~ s/\\//g;
       $GRP[$ID][$ig]->{LEVEL} = substr("$str",0,1);
-      my $n=14;
       $str =~ s/^.{$n}//s;
       $GRP[$ID][$ig]->{NAME}=(split(";",$str))[0];
       if ($GRP[$ID][$ig]->{LEVEL}==1) {$MASTER=$GRP[$ID][$ig]->{NAME}};
