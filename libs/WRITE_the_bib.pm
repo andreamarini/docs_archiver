@@ -23,33 +23,40 @@
 #
 sub WRITE_the_bib{
  #
- my ($file,$ID)=@_;
+ my ($file,$ID,$GROUPS)=@_;
  #
- if (-f $out_bib_file) {&command("cp    $out_bib_file $out_bib_file.SAVE")};
- &command("rm -f $out_bib_file");
+ if ($GROUPS eq 1) {
+  if (-f $out_bib_file) {&command("cp    $out_bib_file $out_bib_file.SAVE")};
+  &command("rm -f $out_bib_file");
+  open $fh, '>>', "$file" or die "Can't write '$file': $!";
+ }else{
+  open $fh, '>', "$file" or die "Can't write '$file': $!";
+ }
  #
- open $fh, '>>', "$file" or die "Can't write '$file': $!";
- print $fh "% Encoding: UTF-8\n";
+ if ($GROUPS eq 1) {print $fh "% Encoding: UTF-8\n"};
  close $fh or die "Can't close '$file': $!";
  #
  for (my $i1 = 1; $i1 <= $NBIB[$ID]; $i1 = $i1 + 1){
   &PRINT_it($ID,$i1,$file);
  }
  #
- my $ID_now=1;
- if ($fix) {$ID_now=0};
- #
- open $fh, '>>', "$file" or die "Can't write '$file': $!";
- for (my $i1 = 0; $i1 <= $NCOMMENT[$ID_now]; $i1 = $i1 + 1){
-  print  $fh $COMMENT[$ID_now][$i1]
- }
- print $fh "\n\@Comment{jabref-meta: databaseType:bibtex;}";
- print $fh "\n\@Comment{jabref-meta: grouping:\n0 AllEntriesGroup:;";
- for (my $i1 = 0; $i1 < $NGRP[$ID_now]; $i1 = $i1 + 1){
+ if ($GROUPS eq 1) 
+ {
+  my $ID_now=1;
+  if ($fix) {$ID_now=0};
+  #
+  open $fh, '>>', "$file" or die "Can't write '$file': $!";
+  for (my $i1 = 0; $i1 <= $NCOMMENT[$ID_now]; $i1 = $i1 + 1){
+   print  $fh $COMMENT[$ID_now][$i1]
+  }
+  print $fh "\n\@Comment{jabref-meta: databaseType:bibtex;}";
+  print $fh "\n\@Comment{jabref-meta: grouping:\n0 AllEntriesGroup:;";
+  for (my $i1 = 0; $i1 < $NGRP[$ID_now]; $i1 = $i1 + 1){
   print $fh  "\n$GRP[$ID_now][$i1]->{LEVEL} ExplicitGroup:$GRP[$ID_now][$i1]->{NAME}\\;0\\;1\\;\\;\\;\\;;";
+  }
+  print $fh  "\n}";
+  close $fh or die "Can't close '$file': $!";
  }
- print $fh  "\n}";
- close $fh or die "Can't close '$file': $!";
  #
 }
 1;

@@ -36,21 +36,35 @@ sub EMPTY{
  my $DOI=0;
  foreach (@infile) { 
   if ($_ =~ /DOI/) {
-   $BIB[0][1]->{url}=(split(/: /,$_))[1];
+   $URL=(split(/: /,$_))[1];
    $DOI=1;
   };
  } 
  if ($DOI) {
-  print "\n\n DOI found is:$BIB[0][1]->{url}\n\n";
+  print "\n\n DOI found is:$URL\n\n";
   $result=&prompt("Is it ok (y/n/edit)?");
   if ("$result" eq "y") {
-   &command("$SRC/tools/doi2bib \"$BIB[0][1]->{url}\" > $in_bib_file");
+   &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
    &DUMP_bib($in_bib_file,$pdf,0,1);
-  }elsif ("$result" eq "n"){
+   $BIB[0][1]->{doi}=$URL;
+   &WRITE_the_bib($in_bib_file,0,-1);
+  }elsif ("$result" eq "n"){ 
   }else{
-   $BIB[0][1]->{url}="$result";
-   &command("$SRC/tools/doi2bib \"$BIB[0][1]->{url}\" > $in_bib_file");
+   $URL="$result";
+   &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
    &DUMP_bib($in_bib_file,$pdf,0,1);
+   $BIB[0][1]->{doi}=$URL;
+   &WRITE_the_bib($in_bib_file,0,-1);
+  }
+ }else{ 
+  print "\n\n DOI not found\n";
+  $result=&prompt("Manual DOI (y/n)?");
+  if ("$result" eq "y") {
+   $URL=&prompt("DOI:");
+   &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
+   &DUMP_bib($in_bib_file,$pdf,0,1);
+   $BIB[0][1]->{doi}=$URL;
+   &WRITE_the_bib($in_bib_file,0,-1);
   }
  }
  #
@@ -97,11 +111,13 @@ sub EMPTY{
   close $fh;
   &command("vim \"$db\"");
  }
- open my $fh, '<', "$db" ;
- my $vars;
-  { local $/ = undef; $vars = <$fh>; }
-  $BIB[0][1]= eval $vars;
- close $fh;
- &PRINT_it(0,1,"$in_bib_file");
+ if (-f $db) {
+  open my $fh, '<', "$db" ;
+  my $vars;
+   { local $/ = undef; $vars = <$fh>; }
+   $BIB[0][1]= eval $vars;
+  close $fh;
+  &PRINT_it(0,1,"$in_bib_file");
+ }
 }
 1;

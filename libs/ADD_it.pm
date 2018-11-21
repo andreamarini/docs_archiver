@@ -34,8 +34,8 @@ sub ADD_it{
  }
  #
  for (my $i1 = 1; $i1 <= $NBIB[0]; $i1 = $i1 + 1){
-  my $if1=&FIND_bib_element_using_VAL(1,"Doi","$BIB[0][$i1]->{Doi}");
-  my $if2=&FIND_bib_element_using_VAL(1,"Title","$BIB[0][$i1]->{Title}");
+  my $if1=&FIND_bib_element_using_VAL(1,"doi","$BIB[0][$i1]->{doi}");
+  my $if2=&FIND_bib_element_using_VAL(1,"title","$BIB[0][$i1]->{title}");
   if (    $key) {@matches = grep { /\b$i1\b/ } @founds};
   if (not $key) {@matches = qw(1)};
   if (not $if1 and not $if2 and @matches){
@@ -61,7 +61,7 @@ sub ADD_it{
  }
  #
  if ($to_add) {
-  &WRITE_the_bib($out_bib_file,1);
+  &WRITE_the_bib($out_bib_file,1,1);
  };
  #
 }

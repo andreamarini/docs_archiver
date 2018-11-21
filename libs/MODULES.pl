@@ -28,6 +28,7 @@ use Getopt::Long;
 use Data::Dumper;
 use File::Find;
 use File::Copy;
+use File::Compare;
 use File::Basename;
 use Data::Dumper;
 use List::Util 'max';

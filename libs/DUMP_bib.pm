@@ -136,6 +136,7 @@ sub DUMP_bib{
      $ivar=$ivp;
     }
     $VAL =~ s/^\s+|\s+$//g;
+    #print "$FIELD $VAL\n";
     $BIB[$ID][$ibib]->{$FIELD}=$VAL;
    };
   }
