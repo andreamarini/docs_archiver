@@ -57,7 +57,7 @@ sub ADD_it{
      &command("rm -f \"$in_bib_file\"");
     };
    }else{undef $clean};
-  }elsif ($if1) {print "Entry found\n";&PRINT_it(1,$if1-1,"stdlog")};
+  }elsif ($if1) {print "### Entry already in the DB!\n";&PRINT_it(1,$if1-1,"stdlog")};
  }
  #
  if ($to_add) {

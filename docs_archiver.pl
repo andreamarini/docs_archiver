@@ -53,7 +53,17 @@ if (not $out_bib_file and     $add) {$out_bib_file="/home/marini/Papers_and_Resu
 #
 if(not $in_bib_file and $pdf and $add)
 { 
- &EMPTY;
+ if (-f $pdf) {&EMPTY("$pdf")};
+ if (-d $pdf) {
+  chdir("$pdf");
+  opendir (DIR, ".") or die $!;
+  while (my $file = readdir(DIR)) {
+   if (not $file =~ /.pdf/) {next};
+   &EMPTY("$file");
+  }
+  $in_bib_file=$pdf;
+  chdir("../");
+ }
  print "\n\n";
 };
 #
@@ -69,14 +79,14 @@ if ($in_bib_file) {
  }
  if (-d $in_bib_file) {
   opendir (DIR, $in_bib_file) or die $!;
-   while (my $bib = readdir(DIR)) {
-    if (not $bib =~ /.bib/) {next};
-    $pdf_file = "$bib";
-    $pdf_file =~ s/.bibtex/.pdf/g;
-    $pdf_file =~ s/.bib/.pdf/g;
-    if (    -f "$in_bib_file/$pdf_file") {&DUMP_bib("$in_bib_file/$bib","$pdf_file",0,0)};
-    if (not -f "$in_bib_file/$pdf_file") {&DUMP_bib("$in_bib_file/$bib",0,0,0)};
-   }
+  while (my $bib = readdir(DIR)) {
+   if (not $bib =~ /.bib/) {next};
+   $pdf_file = "$bib";
+   $pdf_file =~ s/.bibtex/.pdf/g;
+   $pdf_file =~ s/.bib/.pdf/g;
+   if (    -f "$in_bib_file/$pdf_file") {&DUMP_bib("$in_bib_file/$bib","$pdf_file",0,0)};
+   if (not -f "$in_bib_file/$pdf_file") {&DUMP_bib("$in_bib_file/$bib",0,0,0)};
+  }
  }
 };
 print "\n\n Read ".($NBIB[0])." entry(ies) from $in_bib_file\n";

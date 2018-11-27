@@ -22,14 +22,15 @@
 # MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 #
 sub EMPTY{
- $in_bib_file=$pdf;
+ my ($file) = @_;
+ $in_bib_file=$file;
  my $db="$in_bib_file".".db";
  $in_bib_file=~ s/.pdf/.bib/g;
  $in_bib_file=~ s/.PDF/.bib/g;
  #
  # Try first to extract the doi
  #
- &command("pdftotext \"$pdf\" tmp.txt");
+ &command("pdftotext \"$file\" tmp.txt");
  my $infile_data = &read_file("tmp.txt");
  my @infile=split(/\n/,$infile_data);
  &command("rm -f tmp.txt");
@@ -45,14 +46,14 @@ sub EMPTY{
   $result=&prompt("Is it ok (y/n/edit)?");
   if ("$result" eq "y") {
    &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
-   &DUMP_bib($in_bib_file,$pdf,0,1);
+   &DUMP_bib($in_bib_file,$file,0,1);
    $BIB[0][1]->{doi}=$URL;
    &WRITE_the_bib($in_bib_file,0,-1);
   }elsif ("$result" eq "n"){ 
   }else{
    $URL="$result";
    &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
-   &DUMP_bib($in_bib_file,$pdf,0,1);
+   &DUMP_bib($in_bib_file,$file,0,1);
    $BIB[0][1]->{doi}=$URL;
    &WRITE_the_bib($in_bib_file,0,-1);
   }
@@ -62,7 +63,7 @@ sub EMPTY{
   if ("$result" eq "y") {
    $URL=&prompt("DOI:");
    &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
-   &DUMP_bib($in_bib_file,$pdf,0,1);
+   &DUMP_bib($in_bib_file,$file,0,1);
    $BIB[0][1]->{doi}=$URL;
    &WRITE_the_bib($in_bib_file,0,-1);
   }
@@ -74,8 +75,8 @@ sub EMPTY{
   &PRINT_it(0,1,"stdlog");
  }elsif (not -f $db){
   $BIB[0][1]->{TYPE}="article";
-  $BIB[0][1]->{KEY}="$pdf";
-  $BIB[0][1]->{KEY}=~ s/.pdf//g;
+  $BIB[0][1]->{KEY}="$file";
+  $BIB[0][1]->{KEY}=~ s/.file//g;
   $BIB[0][1]->{KEY}=~ s/.PDF//g;
   $BIB[0][1]->{timestamp}="$date";
   $BIB[0][1]->{volume}="none";
