@@ -71,7 +71,7 @@ sub VIEW_groups{
   my $i_ref;
   my @i_masters;
   undef @i_masters;
-  for (my $i1 = 0; $i1 < $NGRP[$ID]; $i1 = $i1 + 1){
+  for (my $i1 = 0; $i1 <= $NGRP[$ID]; $i1 = $i1 + 1){
    undef $i_ref;
    foreach my $local_key (@keys){
     if ( $GRP[$ID][$i1]->{NAME} =~ /$local_key/i) 
