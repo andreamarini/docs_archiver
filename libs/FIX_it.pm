@@ -31,32 +31,32 @@ sub FIX_it{
 #  }
 # }
  #
- opendir (DIR, "/home/marini/Papers_and_Results/DATABASE") or die $!;
- while (my $pdf = readdir(DIR)) {
-  undef $found;
-  $PDF_ori=$pdf;
-  for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
-   $bib=$BIB[$ID][$i1]->{file};
-   $bib =~ s/\:\/home\/marini\/Papers_and_Results\/DATABASE\///g;
-   $bib =~ s/\:DATABASE\///g;
-   $bib =~ s/\:djvu//g;
-   $bib =~ s/\:Djvu//g;
-   $bib =~ s/\:PDF//g;
-   $bib =~ s/\s/_/g;
-   $pdf =~ s/\s/_/g;
-   $bib =~ s/\(/_/g;
-   $pdf =~ s/\(/_/g;
-   $bib =~ s/\)/_/g;
-   $pdf =~ s/\)/_/g;
-   $bib =~ s/\,/_/g;
-   $pdf =~ s/\,/_/g;
-   if ("$bib"=~"$pdf") {$found=$i1};
-   if ($found) {last};
-  }
-  if (!$found) {
-   print "$PDF_ori not found\n";
-   #&command("mv \"DATABASE/$PDF_ori\" TOCHECK");
-  };
- }
+# opendir (DIR, "/home/marini/Papers_and_Results/DATABASE") or die $!;
+# while (my $pdf = readdir(DIR)) {
+#  undef $found;
+#  $PDF_ori=$pdf;
+#  for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
+#   $bib=$BIB[$ID][$i1]->{file};
+#   $bib =~ s/\:\/home\/marini\/Papers_and_Results\/DATABASE\///g;
+#   $bib =~ s/\:DATABASE\///g;
+#   $bib =~ s/\:djvu//g;
+#   $bib =~ s/\:Djvu//g;
+#   $bib =~ s/\:PDF//g;
+#   $bib =~ s/\s/_/g;
+#   $pdf =~ s/\s/_/g;
+#   $bib =~ s/\(/_/g;
+#   $pdf =~ s/\(/_/g;
+#   $bib =~ s/\)/_/g;
+#   $pdf =~ s/\)/_/g;
+#   $bib =~ s/\,/_/g;
+#   $pdf =~ s/\,/_/g;
+#   if ("$bib"=~"$pdf") {$found=$i1};
+#   if ($found) {last};
+#  }
+#  if (!$found) {
+#   print "$PDF_ori not found\n";
+#   #&command("mv \"DATABASE/$PDF_ori\" TOCHECK");
+#  };
+# }
 }
 1;

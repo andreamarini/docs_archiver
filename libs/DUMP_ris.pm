@@ -70,7 +70,7 @@ sub DUMP_ris{
    if ($FIELD =~ /L3/ and not $BIB[$ID][1]->{KEY}) {$BIB[$ID][1]->{KEY} =$VAL};
   }
  $NBIB[$ID]=1; 
- if ($pdf_file) {$BIB[$ID][1]->{PDF}=$pdf_file};
+ if ($pdf_file) {$BIB[$ID][1]->{PDF}="$pdf_file"};
  #
  &command("$SRC/tools/doi2bib \"$BIB[$ID][1]->{url}\" > tmp.bib");
  &DUMP_bib("tmp.bib",$pdf_file,0,1);

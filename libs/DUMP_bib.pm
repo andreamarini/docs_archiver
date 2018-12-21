@@ -101,7 +101,7 @@ sub DUMP_bib{
     next};
    $ibib=$ibib+1;
    $new_entry=1;
-   if ($pdf_file) {$BIB[$ID][$ibib]->{PDF}=$pdf_file};
+   if ($pdf_file) {$BIB[$ID][$ibib]->{PDF}="$pdf_file"};
    $BIB[$ID][$ibib]->{TYPE}=$TYP;
    $BIB[$ID][$ibib]->{KEY}=(split('\s+',$infile[$ivar]))[2];
    $BIB[$ID][$ibib]->{KEY} =~ s/,//g; 
