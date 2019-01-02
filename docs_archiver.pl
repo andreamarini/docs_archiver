@@ -89,13 +89,13 @@ if ($in_bib_file) {
   }
  }
 };
-print "\n\n Read ".($NBIB[0])." entry(ies) from $in_bib_file\n";
+print "\n\n Read ".($NBIB[0])." entry(ies) from $in_bib_file (in)\n";
 #
 # Dump out and add in
 #
 if ($out_bib_file and not $fix) {
  &DUMP_bib($out_bib_file,0,1,1);
- print "\n\n Read ".($NBIB[1])." entry(ies) from $out_bib_file\n";
+ print "\n\n Read ".($NBIB[1])." entry(ies) from $out_bib_file (out)\n";
  &ADD_it;
 }elsif ($add){
  &ADD_it;

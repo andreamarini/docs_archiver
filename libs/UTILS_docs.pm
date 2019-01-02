@@ -23,7 +23,7 @@
 sub FIND_bib_element_using_VAL{
  ($ID,$VAR,$VAL)=@_;
  my $found=0;
- for (my $i1 = 0; $i1 <= $NBIB[$ID]; $i1 = $i1 + 1){
+ for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
   foreach my $V1(keys %{$BIB[$ID][$i1]}){
    if ("$VAR" eq "$V1" and "$VAL" eq "$BIB[$ID][$i1]{$V1}") {
     $found=$i1+1;
