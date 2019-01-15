@@ -43,15 +43,15 @@ sub EMPTY{
  } 
  if ($DOI) {
   print "\n\n DOI found is:$URL\n\n";
-  $result=&prompt("Is it ok (y/n/edit)?");
+  $result=&prompt("Is it ok (y/n/e(dit))?");
   if ("$result" eq "y") {
    &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
    &DUMP_bib($in_bib_file,$file,0,1);
    $BIB[0][1]->{doi}=$URL;
    &WRITE_the_bib($in_bib_file,0,-1);
   }elsif ("$result" eq "n"){ 
-  }else{
-   $URL="$result";
+  }elsif ("$result" eq "e"){ 
+   $URL=&prompt("DOI:");
    &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
    &DUMP_bib($in_bib_file,$file,0,1);
    $BIB[0][1]->{doi}=$URL;
