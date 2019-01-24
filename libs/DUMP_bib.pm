@@ -97,7 +97,7 @@ sub DUMP_bib{
    chomp($TYP);
    my @matches = grep { /$TYP/i } @BIB_TYPS;
    if (!@matches){
-    #print "TYPR $TYP unlisted \n";
+    #if ($ID==0) {print "TYPR $TYP unlisted \n"};
     next};
    $ibib=$ibib+1;
    $new_entry=1;
@@ -123,7 +123,11 @@ sub DUMP_bib{
     $VAL =~ s/{//g;
     $VAL =~ s/},//g;
     $VAL =~ s/}//g;
-    if (not substr("$infile[$ivar]",-2,2) =~ "}," and not substr("$infile[$ivar]",-1,1) =~ "}") 
+    #if ($ID == 0) {print "\nINFILE=$infile[$ivar]\n"};
+    if (not substr("$infile[$ivar]",-2,2) =~ "},"  and 
+        not substr("$infile[$ivar]",-3,3) =~ "}, " and
+        not substr("$infile[$ivar]",-1,1) =~ "}"
+       ) 
     { 
      for ($ivp = $ivar+1; $ivp < $size; $ivp = $ivp + 1){
       my $V_more=$infile[$ivp];
@@ -137,7 +141,7 @@ sub DUMP_bib{
      $ivar=$ivp;
     }
     $VAL =~ s/^\s+|\s+$//g;
-    #print "$FIELD $VAL\n";
+    #if ($ID == 0) {print "\nFIELD=$FIELD|VAR=$VAL\n"};
     $BIB[$ID][$ibib]->{$FIELD}=$VAL;
    };
   }
