@@ -55,6 +55,7 @@ sub ADD_it{
     if ($clean) {
      &command("rm -f \"$BIB[0][$i1]->{PDF}\"");
      &command("rm -f \"$in_bib_file\"");
+     &command("rm -f \"$BIB[0][$i1]->{PDF}\""."db");
     };
    }else{undef $clean};
   }elsif ($if1) {print "### Entry already in the DB!\n";&PRINT_it(1,$if1-1,"stdlog")};

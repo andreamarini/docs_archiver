@@ -28,6 +28,14 @@ sub EMPTY{
  $in_bib_file=~ s/.pdf/.bib/g;
  $in_bib_file=~ s/.PDF/.bib/g;
  #
+ if ($out_bib_file =~ /press/ and not $pdf =~/$date/ ) 
+ {
+  $new_pdf=$pdf;
+  $new_pdf=~ s/.pdf/$date.pdf/g;
+  $pdf=$new_pdf;
+  &command("mv \"$pdf\" \"$new_pdf\"");
+ };
+ #
  # Try first to extract the doi
  #
  &command("pdftotext \"$file\" tmp.txt");
@@ -74,25 +82,28 @@ sub EMPTY{
   print "\n";
   &PRINT_it(0,1,"stdlog");
  }elsif (not -f $db){
-  $BIB[0][1]->{TYPE}="article";
+  if (not $out_bib_file  =~ /press/ )
+  {
+   $BIB[0][1]->{volume}="none";
+   $BIB[0][1]->{numpages}=" ";
+   $BIB[0][1]->{doi}=" ";
+   $BIB[0][1]->{month}=" ";
+   $BIB[0][1]->{url}=" ";
+   $BIB[0][1]->{issue}=" ";
+   $BIB[0][1]->{pages}=" ";
+   $BIB[0][1]->{TYPE}="article";
+  }
   $BIB[0][1]->{KEY}="$file";
   $BIB[0][1]->{KEY}=~ s/.file//g;
   $BIB[0][1]->{KEY}=~ s/.PDF//g;
   $BIB[0][1]->{timestamp}="$date";
-  $BIB[0][1]->{volume}="none";
   $BIB[0][1]->{year}=" ";
-  $BIB[0][1]->{numpages}=" ";
-  $BIB[0][1]->{doi}=" ";
   $BIB[0][1]->{publisher}=" ";
-  $BIB[0][1]->{author}=" ";
-  $BIB[0][1]->{month}=" ";
-  $BIB[0][1]->{url}=" ";
-  $BIB[0][1]->{issue}=" ";
   $BIB[0][1]->{journal}=" ";
+  $BIB[0][1]->{author}=" ";
   $BIB[0][1]->{title}=$BIB[0][1]->{KEY};
   $BIB[0][1]->{title}=~ s/_/ /g;
   $BIB[0][1]->{title}=~ s/-/ /g;
-  $BIB[0][1]->{pages}=" ";
   $NBIB[0]=1;
   @BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis);
   print "\n\n Possible TYPES are:\n";
