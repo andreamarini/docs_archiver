@@ -32,6 +32,7 @@ sub OPTIONS{
             "c"              => \$clean,
             "fix"            => \$fix,
             "view"           => \$view,
+            "s"              => \$simulate,
             "r=s"            => \$replace,
             "k=s"            => \$key) or die;
 sub usage {
@@ -53,6 +54,7 @@ sub usage {
                    -g      [PATTERN]       Group 
                    -r      [PATTERN]       Replace
                    -k      [PATT1,PATT2]   Keys
+                   -s                      Simulate (create a temporary new bib file)
                    -v                      View
 
 EndOfUsage

@@ -43,7 +43,7 @@ sub ADD_it{
    if ($BIB[0][$i1]->{PDF})  {$BIB[0][$i1]->{file}=":$PAPERS_db/$BIB[0][$i1]->{PDF}:PDF"};
    &PRINT_it(0,$i1,"stdlog");
    $result=&prompt_yn("Add this entry?");
-   if ($result eq "y") 
+   if ($result eq "y" and not $simulate) 
    {
     if ($pdf) {
      if (-f $pdf) {&command("cp \"$BIB[0][$i1]->{PDF}\" $PAPERS_db")};
@@ -61,7 +61,7 @@ sub ADD_it{
   }elsif ($if1) {print "### Entry already in the DB!\n";&PRINT_it(1,$if1-1,"stdlog")};
  }
  #
- if ($to_add) {
+ if ($to_add and not $simulate) {
   &WRITE_the_bib($out_bib_file,1,1);
  };
  #
