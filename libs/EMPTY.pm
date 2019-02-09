@@ -23,18 +23,18 @@
 #
 sub EMPTY{
  my ($file) = @_;
+ #
+ if ($out_bib_file =~ /press/ and not $file =~/$date/ ) 
+ {
+  $new_pdf=$file;
+  $new_pdf=~ s/.pdf/$date.pdf/g;
+  &command("mv \"$file\" \"$new_pdf\"");
+  $file=$new_pdf;
+ };
  $in_bib_file=$file;
  my $db="$in_bib_file".".db";
  $in_bib_file=~ s/.pdf/.bib/g;
  $in_bib_file=~ s/.PDF/.bib/g;
- #
- if ($out_bib_file =~ /press/ and not $pdf =~/$date/ ) 
- {
-  $new_pdf=$pdf;
-  $new_pdf=~ s/.pdf/$date.pdf/g;
-  $pdf=$new_pdf;
-  &command("mv \"$pdf\" \"$new_pdf\"");
- };
  #
  # Try first to extract the doi
  #
@@ -122,8 +122,7 @@ sub EMPTY{
   print $fh Dumper $BIB[0][1];
   close $fh;
   &command("vim \"$db\"");
- }
- if (-f $db) {
+ }elsif (-f $db) {
   open my $fh, '<', "$db" ;
   my $vars;
    { local $/ = undef; $vars = <$fh>; }
