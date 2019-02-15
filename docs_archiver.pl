@@ -61,7 +61,6 @@ if(not $in_bib_file and $pdf and $add)
    if (not $file =~ /.pdf/) {next};
    &EMPTY("$file");
   }
-  $in_bib_file=$pdf;
   chdir("../");
  }
  print "\n\n";

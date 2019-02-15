@@ -82,7 +82,14 @@ sub EMPTY{
   print "\n";
   &PRINT_it(0,1,"stdlog");
  }elsif (not -f $db){
-  if (not $out_bib_file  =~ /press/ )
+  my @MANUAL_BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis Notes);
+  print "\n\n Possible TYPES are:\n";
+  for $typ (@MANUAL_BIB_TYPS)
+  {
+    print "\t(".lcfirst(substr($typ,0,2)).") $typ\n"; 
+  }
+  $result=&prompt("Which one?");
+  if (not $out_bib_file  =~ /press/ and not $results == "no" )
   {
    $BIB[0][1]->{volume}="none";
    $BIB[0][1]->{numpages}=" ";
@@ -97,22 +104,21 @@ sub EMPTY{
   $BIB[0][1]->{KEY}=~ s/.file//g;
   $BIB[0][1]->{KEY}=~ s/.PDF//g;
   $BIB[0][1]->{timestamp}="$date";
-  $BIB[0][1]->{year}=" ";
-  $BIB[0][1]->{publisher}=" ";
-  $BIB[0][1]->{journal}=" ";
+  $BIB[0][1]->{year}="$current_year";
+  if (not $results == "no" )
+  {
+   $BIB[0][1]->{publisher}=" ";
+   $BIB[0][1]->{journal}=" ";
+  }
   $BIB[0][1]->{author}=" ";
   $BIB[0][1]->{title}=$BIB[0][1]->{KEY};
   $BIB[0][1]->{title}=~ s/_/ /g;
   $BIB[0][1]->{title}=~ s/-/ /g;
   $NBIB[0]=1;
-  @BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis);
-  print "\n\n Possible TYPES are:\n";
-  for $typ (@BIB_TYPS)
-  {
-    print "\t(".lcfirst(substr($typ,0,2)).") $typ\n"; 
-  }
-  $result=&prompt("Which one?");
-  for $typ (@BIB_TYPS)
+  #
+  if ($result == "no") {$result="un"};
+  #
+  for $typ (@MANUAL_BIB_TYPS)
   {
    if (lcfirst(substr($typ,0,2)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
    elsif (lcfirst(substr($typ,0,1)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
@@ -122,7 +128,8 @@ sub EMPTY{
   print $fh Dumper $BIB[0][1];
   close $fh;
   &command("vim \"$db\"");
- }elsif (-f $db) {
+ }
+ if (-f $db) {
   open my $fh, '<', "$db" ;
   my $vars;
    { local $/ = undef; $vars = <$fh>; }
