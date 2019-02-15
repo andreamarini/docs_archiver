@@ -23,6 +23,14 @@
 #
 sub FIX_it{
  my ($ID) = @_;
+ for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
+   if ($BIB[$ID][$i1]->{author}) 
+   {
+    my $authors=latex_encode($BIB[$ID][$i1]->{author});
+    $BIB[$ID][$i1]->{author}=$authors;
+   }
+ }
+#
 # for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
 #  foreach my $var(keys %{$BIB[$ID][$i1]}){
 #   if (not $var eq "file") {next};

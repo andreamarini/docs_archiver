@@ -41,6 +41,14 @@ sub ADD_it{
   if (not $if1 and not $if2 and @matches){
    if ($group) {$BIB[0][$i1]->{groups}=$group};
    if ($BIB[0][$i1]->{PDF})  {$BIB[0][$i1]->{file}=":$PAPERS_db/$BIB[0][$i1]->{PDF}:PDF"};
+   #
+   # Author's fix
+   #
+   if ($BIB[0][$i1]->{Author}) 
+   {
+    my $authors=latex_encode($BIB[0][$i1]->{Author});
+    $BIB[0][$i1]->{Author}=$authors;
+   }
    &PRINT_it(0,$i1,"stdlog");
    $result=&prompt_yn("Add this entry?");
    if ($result eq "y" and not $simulate) 

@@ -56,3 +56,5 @@ use ADD_it;
 # Functions
 use prompt;
 #
+# LaTeX
+use LaTeX::Encode ':all', add => { '@' => 'AT' }, remove => [ '$' ];
