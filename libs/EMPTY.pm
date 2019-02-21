@@ -28,6 +28,7 @@ sub EMPTY{
  {
   $new_pdf=$file;
   $new_pdf=~ s/.pdf/$date.pdf/g;
+  $new_pdf=~ s/.PDF/$date.PDF/g;
   &command("mv \"$file\" \"$new_pdf\"");
   $file=$new_pdf;
  };
@@ -124,6 +125,9 @@ sub EMPTY{
    elsif (lcfirst(substr($typ,0,1)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
    #print "$result $BIB[0][1]->{TYPE}\n";
   }
+  my $title=latex_encode($BIB[0][1]->{title});
+  $BIB[0][1]->{title}=$title;
+  $BIB[0][1]->{title}=~ s/'/\'/g;
   open $fh, '>', "$db" ;
   print $fh Dumper $BIB[0][1];
   close $fh;

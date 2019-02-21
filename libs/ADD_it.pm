@@ -49,6 +49,11 @@ sub ADD_it{
     my $authors=latex_encode($BIB[0][$i1]->{Author});
     $BIB[0][$i1]->{Author}=$authors;
    }
+   if ($BIB[0][$i1]->{title}) 
+   {
+    my $authors=latex_encode($BIB[0][$i1]->{title});
+    $BIB[0][$i1]->{title}=$authors;
+   }
    &PRINT_it(0,$i1,"stdlog");
    $result=&prompt_yn("Add this entry?");
    if ($result eq "y" and not $simulate) 
