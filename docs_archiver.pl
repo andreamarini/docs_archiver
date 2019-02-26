@@ -31,7 +31,7 @@ do "$SRC/libs/MODULES.pl";
 $version="1.0";
 local $| = 1;
 &UTILS_time($date,$time);
-@BIB_TYPS = qw(Article Year Publisher Book Conference Misc Unpublished PhdThesis InCollection Other Manual abstract title InBook article);
+@BIB_TYPS = qw(Article Year Publisher Book Conference Misc Unpublished PhdThesis InCollection Other Manual abstract title InBook article MasterThesis);
 #
 print "\n Docs Archiver version $version ";
 #

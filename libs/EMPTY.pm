@@ -83,7 +83,7 @@ sub EMPTY{
   print "\n";
   &PRINT_it(0,1,"stdlog");
  }elsif (not -f $db){
-  my @MANUAL_BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis Notes);
+  my @MANUAL_BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis Notes MasterThesis);
   print "\n\n Possible TYPES are:\n";
   for $typ (@MANUAL_BIB_TYPS)
   {
@@ -117,13 +117,14 @@ sub EMPTY{
   $BIB[0][1]->{title}=~ s/-/ /g;
   $NBIB[0]=1;
   #
-  if ($result == "no") {$result="un"};
+  if ($result =~ "no") {$result="un"};
   #
   for $typ (@MANUAL_BIB_TYPS)
   {
-   if (lcfirst(substr($typ,0,2)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
+   if (lcfirst(substr($typ,0,3)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
+   elsif (lcfirst(substr($typ,0,2)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
    elsif (lcfirst(substr($typ,0,1)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
-   #print "$result $BIB[0][1]->{TYPE}\n";
+   print "$result $BIB[0][1]->{TYPE}".lcfirst(substr($typ,0,2))."\n";
   }
   my $title=latex_encode($BIB[0][1]->{title});
   $BIB[0][1]->{title}=$title;
