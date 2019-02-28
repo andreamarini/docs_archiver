@@ -79,6 +79,7 @@ sub DUMP_bib{
       $GRP[$ID][$ig]->{LEVEL} = substr("$str",0,1);
       $str =~ s/^.{$n}//s;
       $GRP[$ID][$ig]->{NAME}=(split(";",$str))[0];
+      $GRP[$ID][$ig]->{VALUES}=(split($GRP[$ID][$ig]->{NAME},$infile[$ivp]))[1];
       if ($GRP[$ID][$ig]->{LEVEL}==1) {$MASTER=$GRP[$ID][$ig]->{NAME}};
       $GRP[$ID][$ig]->{MASTER}=$MASTER;
       #print "\n $ig L=$GRP[$ID][$ig]->{LEVEL} N=$GRP[$ID][$ig]->{NAME} M=$GRP[$ID][$ig]->{MASTER}\n";

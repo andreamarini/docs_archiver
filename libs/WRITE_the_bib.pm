@@ -52,7 +52,7 @@ sub WRITE_the_bib{
   print $fh "\n\@Comment{jabref-meta: databaseType:bibtex;}";
   print $fh "\n\@Comment{jabref-meta: grouping:\n0 AllEntriesGroup:;";
   for (my $i1 = 0; $i1 <= $NGRP[$ID_now]; $i1 = $i1 + 1){
-  print $fh  "\n$GRP[$ID_now][$i1]->{LEVEL} ExplicitGroup:$GRP[$ID_now][$i1]->{NAME}\\;0\\;1\\;\\;\\;\\;;";
+  print $fh  "\n$GRP[$ID_now][$i1]->{LEVEL} ExplicitGroup:$GRP[$ID_now][$i1]->{NAME}$GRP[$ID_now][$i1]->{VALUES}";
   }
   print $fh  "\n}";
   close $fh or die "Can't close '$file': $!";
