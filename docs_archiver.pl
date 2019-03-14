@@ -46,6 +46,9 @@ if ($out_bib_file  =~ /press/     ) {
  $out_bib_file="/home/marini/Domande-Documenti/Personal/Letture/press.bib";
  $PAPERS_db="/home/marini/Domande-Documenti/Personal/Letture/DATABASE";
 };
+if ($in_bib_file  =~ /press/     ) {
+ $in_bib_file="/home/marini/Domande-Documenti/Personal/Letture/press.bib";
+};
 if (not $in_bib_file  and not $add) {$in_bib_file="/home/marini/Papers_and_Results/bibliography.bib"};
 if (not $out_bib_file and     $add) {$out_bib_file="/home/marini/Papers_and_Results/bibliography.bib"};
 #

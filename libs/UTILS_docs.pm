@@ -100,7 +100,7 @@ sub VIEW_groups{
    }
   }
  }else{
-  for (my $i1 = 0; $i1 < $NGRP[$ID]; $i1 = $i1 + 1){
+  for (my $i1 = 0; $i1 <= $NGRP[$ID]; $i1 = $i1 + 1){
    my $str='  ' x $GRP[$ID][$i1]->{LEVEL};
    print $str." $GRP[$ID][$i1]->{NAME}\n";
   }
