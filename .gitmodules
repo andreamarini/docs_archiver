@@ -1,3 +1,7 @@
 [submodule "ydb"]
 	path = ydb
 	url = git@github.com:yambo-code/ydb.git
+[submodule "tools"]
+	path = tools
+	url = git@github.com:fxcoudert/tools.git
+
