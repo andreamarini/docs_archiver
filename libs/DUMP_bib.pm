@@ -59,6 +59,7 @@ sub DUMP_bib{
    chomp($infile[$ivar]);
    $infile[$ivar] =~ s/\r//g;
    $infile[$ivar] =~ s/="/= {/g;
+   $infile[$ivar] =~ s/= "/= {/g;
    $infile[$ivar] =~ s/",/},/g;
   }
  for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1){
