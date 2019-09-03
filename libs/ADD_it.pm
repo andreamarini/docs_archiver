@@ -71,7 +71,8 @@ sub ADD_it{
      &command("rm -f \"$BIB[0][$i1]->{PDF}\""."db");
     };
    }else{undef $clean};
-  }elsif ($if1) {print "### Entry already in the DB!\n";&PRINT_it(1,$if1-1,"stdlog")};
+  }elsif ($if1) {print "!!! ENTRY ALREADY IN THE DB !!!\n\n\n";&PRINT_it(1,$if1-1,"stdlog")
+  }elsif ($if2) {print "!!! ENTRY ALREADY IN THE DB !!!\n\n\n";&PRINT_it(1,$if2-1,"stdlog")};
  }
  #
  if ($to_add and not $simulate) {

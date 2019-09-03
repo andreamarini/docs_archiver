@@ -56,29 +56,50 @@ sub EMPTY{
   if ("$result" eq "y") {
    &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
    &DUMP_bib($in_bib_file,$file,0,1);
-   $BIB[0][1]->{doi}=$URL;
-   &WRITE_the_bib($in_bib_file,0,-1);
   }elsif ("$result" eq "n"){ 
   }elsif ("$result" eq "e"){ 
    $URL=&prompt("DOI:");
    &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
    &DUMP_bib($in_bib_file,$file,0,1);
-   $BIB[0][1]->{doi}=$URL;
-   &WRITE_the_bib($in_bib_file,0,-1);
   }
  }else{ 
-  print "\n\n DOI not found\n";
-  $result=&prompt("Manual DOI (y/n)?");
-  if ("$result" eq "y") {
-   $URL=&prompt("DOI:");
-   &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
+  print "\n\n DOI not found. Trying as arXive\n";
+  # 
+  # Trying with arXive
+  if (not $BIB_is_ok) 
+  { 
+   my $arxive=$file;
+   $arxive=~ s/.pdf//g;
+   &command("$SRC/tools/arxive2bib.py \"$arxive\" > $in_bib_file"); 
    &DUMP_bib($in_bib_file,$file,0,1);
-   $BIB[0][1]->{doi}=$URL;
-   &WRITE_the_bib($in_bib_file,0,-1);
+   $BIB[0][1]->{KEY}="$arxive";
+  }
+  if ($BIB[0][1]->{Title} =~ "Error")
+  {
+   print "\n\n arXive search failed. Switching to manual\n";
+   $result=&prompt("Manual DOI (y/n)?");
+   if ("$result" eq "y") {
+    $URL=&prompt("DOI:");
+    &command("$SRC/tools/doi2bib \"$URL\" > $in_bib_file");
+    &DUMP_bib($in_bib_file,$file,0,1);
+   }
   }
  }
  #
- if (-f $in_bib_file) 
+ # Is bib ok?
+ #
+ my $BIB_is_ok;
+ if ($BIB[0][1]->{TYPE}) 
+ {
+  $BIB[0][1]->{doi}=$URL;
+  &WRITE_the_bib($in_bib_file,0,-1);
+  $BIB_is_ok=1;
+ }else{
+  &command("rm -f $in_bib_file");;
+ }
+ #print " DOI not found. Switching to manual\n\n";
+ #
+ if ($BIB_is_ok) 
  {
   print "\n";
   &PRINT_it(0,1,"stdlog");
