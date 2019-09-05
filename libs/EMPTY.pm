@@ -63,20 +63,23 @@ sub EMPTY{
    &DUMP_bib($in_bib_file,$file,0,1);
   }
  }else{ 
-  print "\n\n DOI not found. Trying as arXive\n";
+  print "\n DOI not found. Trying as arXive\n";
   # 
   # Trying with arXive
   if (not $BIB_is_ok) 
   { 
    my $arxive=$file;
    $arxive=~ s/.pdf//g;
-   &command("$SRC/tools/arxive2bib.py \"$arxive\" > $in_bib_file"); 
+   &command("$SRC/libs/arxive2bib.py \"$arxive\" > $in_bib_file"); 
    &DUMP_bib($in_bib_file,$file,0,1);
    $BIB[0][1]->{KEY}="$arxive";
   }
   if ($BIB[0][1]->{Title} =~ "Error")
   {
    print "\n\n arXive search failed. Switching to manual\n";
+   foreach my $var(keys %{$BIB[0][1]}){
+     delete($BIB[0][1]{$var});
+   }
    $result=&prompt("Manual DOI (y/n)?");
    if ("$result" eq "y") {
     $URL=&prompt("DOI:");
@@ -89,7 +92,7 @@ sub EMPTY{
  # Is bib ok?
  #
  my $BIB_is_ok;
- if ($BIB[0][1]->{TYPE}) 
+ if ($BIB[0][1]->{TYPE} and ! $BIB[0][1]->{Title} =~ /Error/) 
  {
   $BIB[0][1]->{doi}=$URL;
   &WRITE_the_bib($in_bib_file,0,-1);
@@ -145,7 +148,7 @@ sub EMPTY{
    if (lcfirst(substr($typ,0,3)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
    elsif (lcfirst(substr($typ,0,2)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
    elsif (lcfirst(substr($typ,0,1)) =~ $result) {$BIB[0][1]->{TYPE}=$typ}
-   print "$result $BIB[0][1]->{TYPE}".lcfirst(substr($typ,0,2))."\n";
+   #print "$result $BIB[0][1]->{TYPE}".lcfirst(substr($typ,0,2))."\n";
   }
   my $title=latex_encode($BIB[0][1]->{title});
   $BIB[0][1]->{title}=$title;

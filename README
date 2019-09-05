@@ -3,3 +3,6 @@ Reqs:
 -----
 
 pip install --upgrade pip
+aptitute install libtext-bibtex-perl
+aptitude install libbusiness-isbn-perl
+
