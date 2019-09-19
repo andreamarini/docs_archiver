@@ -92,7 +92,7 @@ sub EMPTY{
  # Is bib ok?
  #
  my $BIB_is_ok;
- if ($BIB[0][1]->{TYPE} and ! $BIB[0][1]->{Title} =~ /Error/) 
+ if ($BIB[0][1]->{TYPE} and not $BIB[0][1]->{Title} =~ /Error/) 
  {
   $BIB[0][1]->{doi}=$URL;
   &WRITE_the_bib($in_bib_file,0,-1);
