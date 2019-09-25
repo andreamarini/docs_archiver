@@ -35,7 +35,7 @@ sub DUMP_bib{
  #
  my @NOBIBS = qw(comment StaticGroup Comment);
  #
- if ($dump) { open $fh, '>', "$file".".db" or die "Can't write '$file' db: $!"};
+ if ($dump) { open $fh, '>:encoding(UTF-8)', "$file".".db" or die "Can't write '$file' db: $!"};
  #
  my $infile_data;
  my $ig=-1;
@@ -46,9 +46,9 @@ sub DUMP_bib{
   $ig=$NGRP[$ID]-1;
   $ic=$NCOMMENT[$ID]-1;
   $ibib=$NBIB[$ID];
-  if ($dump) { open $fh, '>>', "$file".".db" or die "Can't write '$file' db: $!"};
+  if ($dump) { open $fh, '>>:encoding(UTF-8)', "$file".".db" or die "Can't write '$file' db: $!"};
  }else{
-  if ($dump) { open $fh, '>', "$file".".db" or die "Can't write '$file' db: $!"};
+  if ($dump) { open $fh, '>:encoding(UTF-8)', "$file".".db" or die "Can't write '$file' db: $!"};
  }
  my $new_entry=0;
  $infile_data = &read_file($file);
@@ -106,6 +106,7 @@ sub DUMP_bib{
    if ($pdf_file) {$BIB[$ID][$ibib]->{PDF}="$pdf_file"};
    $BIB[$ID][$ibib]->{TYPE}=$TYP;
    $BIB[$ID][$ibib]->{KEY}=(split('\s+',$infile[$ivar]))[2];
+   #print "KEY $BIB[$ID][$ibib]->{KEY}";
    $BIB[$ID][$ibib]->{KEY} =~ s/,//g; 
   }
   #

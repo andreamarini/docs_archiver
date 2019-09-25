@@ -27,7 +27,7 @@ sub PRINT_it{
  #
  my $stdout = *STDOUT;
  if (not $file eq "stdlog") { 
-  open $fh, '>>', "$file" or die "Can't write '$file': $!";
+  open $fh, '>>:encoding(UTF-8)', "$file" or die "Can't write '$file': $!";
   $stdout=$fh;
  }
  #
