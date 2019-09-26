@@ -76,8 +76,8 @@ if($help or (not $in_bib_file and not $pdf)){ &usage };
 #
 if ($in_bib_file) {
  if (-f $in_bib_file) {
-  if ($pdf and -f $pdf) {&DUMP_bib($in_bib_file,$pdf,0,1)}
-  if (not $pdf        ) {&DUMP_bib($in_bib_file,0,0,1)}
+  if ($pdf and -f "$pdf") {&DUMP_bib($in_bib_file,$pdf,0,1)}
+  if (not $pdf          ) {&DUMP_bib($in_bib_file,0,0,1)}
  }
  if (-d $in_bib_file) {
   opendir (DIR, $in_bib_file) or die $!;
