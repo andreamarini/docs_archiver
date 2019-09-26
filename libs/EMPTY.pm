@@ -107,22 +107,23 @@ sub EMPTY{
   print "\n";
   &PRINT_it(0,1,"stdlog");
  }elsif (not -f $db){
-  my @MANUAL_BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis Notes MasterThesis);
+  my @MANUAL_BIB_TYPS = qw(Book Manual Misc Other Unpublished PhdThesis Notes MasterThesis Article);
   print "\n\n Possible TYPES are:\n";
   for $typ (@MANUAL_BIB_TYPS)
   {
     print "\t(".lcfirst(substr($typ,0,2)).") $typ\n"; 
   }
   $result=&prompt("Which one?");
-  if (not $out_bib_file  =~ /press/ and not $results == "no" )
+  if (not $out_bib_file =~ /press/ and not $result =~ "no" )
   {
    $BIB[0][1]->{volume}="none";
    $BIB[0][1]->{numpages}=" ";
-   $BIB[0][1]->{doi}=" ";
-   $BIB[0][1]->{month}=" ";
-   $BIB[0][1]->{url}=" ";
-   $BIB[0][1]->{issue}=" ";
-   $BIB[0][1]->{pages}=" ";
+   $BIB[0][1]->{journal}="";
+   $BIB[0][1]->{doi}="DOI";
+   $BIB[0][1]->{month}="MONTH ";
+   $BIB[0][1]->{url}="URL";
+   $BIB[0][1]->{issue}="ISSUE";
+   $BIB[0][1]->{pages}="PAGES ";
    $BIB[0][1]->{TYPE}="article";
   }
   $BIB[0][1]->{KEY}="$file";
