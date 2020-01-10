@@ -49,8 +49,7 @@ sub WRITE_the_bib{
   for (my $i1 = 0; $i1 <= $NCOMMENT[$ID_now]; $i1 = $i1 + 1){
    print  $fh $COMMENT[$ID_now][$i1]
   }
-  print $fh "\n\@Comment{jabref-meta: databaseType:bibtex;}";
-  print $fh "\n\@Comment{jabref-meta: grouping:\n0 AllEntriesGroup:;";
+  print $fh "\n\@Comment{jabref-meta: groupstree:\n0 AllEntriesGroup:;";
   for (my $i1 = 0; $i1 <= $NGRP[$ID_now]; $i1 = $i1 + 1){
   print $fh  "\n$GRP[$ID_now][$i1]->{LEVEL} ExplicitGroup:$GRP[$ID_now][$i1]->{NAME}$GRP[$ID_now][$i1]->{VALUES}";
   }

@@ -65,7 +65,7 @@ sub DUMP_bib{
  for ($ivar = 0; $ivar < $size; $ivar = $ivar + 1){
   #
   if (substr("$infile[$ivar]",0,8) eq "\@Comment") {
-   if ($infile[$ivar] =~ /grouping/)
+   if ($infile[$ivar] =~ /grouping/ or $infile[$ivar] =~ /groupstree/)
    {
     for ($ivp = $ivar+2; $ivp < $size; $ivp = $ivp + 1)
     {
