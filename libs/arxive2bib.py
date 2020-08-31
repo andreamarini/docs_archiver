@@ -2,20 +2,26 @@
  
 # get the arxiv id
 import sys
-from string import strip, split
 for arg in sys.argv[1:]:
-    arg = strip(arg)
-    arg = strip(arg, chars="arxiv:")
-    arg = strip(arg, chars="http://")
-    arg = strip(arg, chars="www.")
-    arg = strip(arg, chars="arxiv.org/abs/")
-    arg = split(arg, sep='v')[0]
-    xid = strip(arg)
+    print(arg)
+    arg=arg.strip()
+    arg=arg.strip("arxiv:")
+    arg=arg.strip("http://")
+    arg=arg.strip("www.")
+    arg=arg.strip("arxiv.org/abs/")
+    arg=arg.split('v')[0]
+    #xid = strip(arg)
+    #arg = strip(arg, chars="arxiv:")
+    #arg = strip(arg, chars="http://")
+    #arg = strip(arg, chars="www.")
+    #arg = strip(arg, chars="arxiv.org/abs/")
+    #arg = split(arg, sep='v')[0]
+    xid = arg
  
     # download the xml
-    import urllib
+    import urllib.request
     from xml.dom import minidom
-    usock = urllib.urlopen('http://export.arxiv.org/api/query?id_list='+xid)
+    usock = urllib.request.urlopen('http://export.arxiv.org/api/query?id_list='+xid)
     xmldoc = minidom.parse(usock)
     usock.close()
  
@@ -46,10 +52,10 @@ for arg in sys.argv[1:]:
  
     # output
  
-    print "@Article{"+text_first_author_surname+text_year[-2:]+","
-    print "author = {"+" and ".join(authorlist)+"},"
-    print "title = {"+text_title+"},"
-    print "year = {"+text_year+"},"
-    print "eprint = {"+xid+"},"
-    print "URL = {http://www.arxiv.org/abs/"+xid+"},"
-    print "}"
+    print("@Article{"+text_first_author_surname+text_year[-2:]+",")
+    print("author = {"+" and ".join(authorlist)+"},")
+    print("title = {"+text_title+"},")
+    print("year = {"+text_year+"},")
+    print("eprint = {"+xid+"},")
+    print("URL = {http://www.arxiv.org/abs/"+xid+"},")
+    print("}")
