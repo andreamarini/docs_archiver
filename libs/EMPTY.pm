@@ -39,17 +39,22 @@ sub EMPTY{
  #
  # Try first to extract the doi
  #
- &command("pdftotext \"$file\" tmp.txt");
- my $infile_data = &read_file("tmp.txt");
- my @infile=split(/\n/,$infile_data);
- &command("rm -f tmp.txt");
- my $DOI=0;
- foreach (@infile) { 
-  if ($_ =~ /DOI/) {
-   $URL=(split(/: /,$_))[1];
-   $DOI=1;
-  };
- } 
+ if (not $in_DOI) {
+  &command("pdftotext \"$file\" tmp.txt");
+  my $infile_data = &read_file("tmp.txt");
+  my @infile=split(/\n/,$infile_data);
+  &command("rm -f tmp.txt");
+  my $DOI=0;
+  foreach (@infile) { 
+   if ($_ =~ /DOI/) {
+    $URL=(split(/: /,$_))[1];
+    $DOI=1;
+   };
+  } 
+ }else{
+  $URL=$in_DOI;
+  $DOI=1;
+ }
  if ($DOI) {
   print "\n\n DOI found is:$URL\n\n";
   $result=&prompt("Is it ok (y/n/e(dit))?");

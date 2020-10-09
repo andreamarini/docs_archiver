@@ -24,6 +24,7 @@
 sub OPTIONS{
 &GetOptions("help"           => \$help,
             "i=s"            => \$in_bib_file,
+            "doi=s"          => \$in_DOI,
             "p=s"            => \$pdf,
             "g:s"            => \$group,
             "o=s"            => \$out_bib_file,
@@ -51,6 +52,7 @@ sub usage {
                    -a                      Add (to the default DB)
                    -d                      Dump contents
                    -fix                    Fix the INPUT bib file
+                   -doi    [DOI]           Doi
                    -g      [PATTERN]       Group 
                    -r      [PATTERN]       Replace
                    -k      [PATT1,PATT2]   Keys
