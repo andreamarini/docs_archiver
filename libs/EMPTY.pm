@@ -41,16 +41,27 @@ sub EMPTY{
  #
  if (not $in_DOI) {
   &command("pdftotext \"$file\" tmp.txt");
-  my $infile_data = &read_file("tmp.txt");
-  my @infile=split(/\n/,$infile_data);
+  $infile_data = &read_file("tmp.txt");
+  @infile_n=split(/\n/,$infile_data);
+  @infile_s=split(/\n/,$infile_data);
   &command("rm -f tmp.txt");
-  my $DOI=0;
-  foreach (@infile) { 
+  undef $DOI;
+  foreach (@infile_n) { 
    if ($_ =~ /DOI/) {
     $URL=(split(/: /,$_))[1];
     $DOI=1;
    };
-  } 
+  }
+  if (not $DOI) {
+   foreach (@infile_s) { 
+    if ($_ =~ /doi.org/) {
+     $URL=(split(/doi.org\//,$_))[1];
+     $URL=(split(/ /,$URL))[0];
+     $DOI=1;
+     last;
+    };
+   }
+  }
  }else{
   $URL=$in_DOI;
   $DOI=1;
