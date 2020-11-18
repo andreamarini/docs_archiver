@@ -26,7 +26,7 @@ sub WRITE_the_bib{
  my ($file,$ID,$GROUPS)=@_;
  #
  if ($GROUPS eq 1) {
-  if (-f $out_bib_file) {&command("cp    $out_bib_file $out_bib_file.SAVE")};
+  if (-f $out_bib_file) {&command("cp    $out_bib_file $out_bib_file.docs_archiver.SAVE")};
   &command("rm -f $out_bib_file");
   open $fh, '>>', "$file" or die "Can't write '$file': $!";
  }else{

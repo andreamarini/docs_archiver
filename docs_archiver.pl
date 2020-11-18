@@ -54,10 +54,12 @@ if (not $out_bib_file and     $add) {$out_bib_file="/home/marini/Papers_and_Resu
 #
 # No input bib file? Create an empty one
 #
+$SCAN_dir=1;
 if(not $in_bib_file and $pdf and $add)
 { 
  if (-f $pdf) {&EMPTY("$pdf")};
  if (-d $pdf) {
+  $SCAN_dir=0;
   chdir("$pdf");
   opendir (DIR, ".") or die $!;
   while (my $file = readdir(DIR)) {

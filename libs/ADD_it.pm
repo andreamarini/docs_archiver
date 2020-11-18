@@ -33,6 +33,7 @@ sub ADD_it{
   @founds=&FIND_bib_element_using_KEY(0,$key);
  }
  #
+ print "Adding ",$NBIB[0]," entries\n";
  for (my $i1 = 1; $i1 <= $NBIB[0]; $i1 = $i1 + 1){
   if ($BIB[0][$i1]->{doi}) {my $if1=&FIND_bib_element_using_VAL(1,"doi","$BIB[0][$i1]->{doi}")};
   my $if2=&FIND_bib_element_using_VAL(1,"title","$BIB[0][$i1]->{title}");
