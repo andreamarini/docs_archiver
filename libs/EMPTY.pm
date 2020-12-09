@@ -24,6 +24,14 @@
 sub EMPTY{
  my ($file) = @_;
  #
+ # remove spaces and strange characters
+ #
+ $new_pdf=$file;
+ $new_pdf=~ s/ /_/g;
+ $new_pdf=~ s/,/_/g;
+ &command("mv \"$file\" \"$new_pdf\"");
+ $file=$new_pdf;
+ #
  if ($out_bib_file =~ /press/ and not $file =~/$date/ ) 
  {
   $new_pdf=$file;
@@ -82,16 +90,18 @@ sub EMPTY{
    &DUMP_bib($in_bib_file,$file,0,$SCAN_dir);
   }
  }else{ 
-  print "\n DOI not found. Trying as arXive\n";
+  $result=&prompt("\n DOI not found. Trying as arXive using $file?");
   # 
   # Trying with arXive
-  if (not $BIB_is_ok) 
+  if (not $BIB_is_ok and "$result" eq "y") 
   { 
    my $arxive=$file;
    $arxive=~ s/.pdf//g;
    &command("$SRC/libs/arxive2bib.py \"$arxive\" > $in_bib_file"); 
    &DUMP_bib($in_bib_file,$file,0,$SCAN_dir);
    $BIB[0][$NBIB_try]->{KEY}="$arxive";
+  }else{
+   $BIB[0][$NBIB_try]->{Title} = "Error";
   }
   if ($BIB[0][$NBIB_try]->{Title} =~ "Error")
   {
