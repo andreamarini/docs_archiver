@@ -74,10 +74,7 @@ sub VIEW_groups{
   for (my $i1 = 0; $i1 <= $NGRP[$ID]; $i1 = $i1 + 1){
    undef $i_ref;
    foreach my $local_key (@keys){
-    if ( $GRP[$ID][$i1]->{NAME} =~ /$local_key/i) 
-    {
-     $i_ref=$i1;
-    }
+    if ( $GRP[$ID][$i1]->{NAME} =~ /$local_key/i) {$i_ref=$i1;}
    }
    if ($i_ref){
    #print "$i_ref $GRP[$ID][$i_ref]->{NAME} $GRP[$ID][$i_ref]->{LEVEL}\n";

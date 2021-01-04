@@ -30,6 +30,7 @@ sub ADD_it{
  print "\n BIB entries to be added\n\n";
  if ($key) 
  {
+  @keys=split(',',$key);
   @founds=&FIND_bib_element_using_KEY(0,$key);
  }
  #
@@ -40,7 +41,17 @@ sub ADD_it{
   if (    $key) {@matches = grep { /\b$i1\b/ } @founds};
   if (not $key) {@matches = qw(1)};
   if (not $if1 and not $if2 and @matches){
-   if ($group) {$BIB[0][$i1]->{groups}=$group};
+   if ($group or $key) {
+    for (my $i2 = 0; $i2 <= $NGRP[1]; $i2 = $i2 + 1){
+     if ($key) 
+     {
+      foreach my $local_key (@keys){
+       if ( $GRP[1][$i2]->{NAME} =~ /$local_key/i){$BIB[0][$i1]->{groups}=$GRP[1][$i2]->{NAME}}
+      }
+     }
+     if ($group and $GRP[1][$i2]->{NAME} =~ /$group/i)  {$BIB[0][$i1]->{groups}=$GRP[1][$i2]->{NAME}};
+    }
+   }
    if ($BIB[0][$i1]->{PDF})  {$BIB[0][$i1]->{file}=":$PAPERS_db/$BIB[0][$i1]->{PDF}:PDF"};
    #
    # Author's fix
