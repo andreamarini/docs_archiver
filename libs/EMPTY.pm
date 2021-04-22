@@ -77,7 +77,7 @@ sub EMPTY{
   $URL=$in_DOI;
   $DOI=1;
  }
- if ($DOI) {
+ if ($DOI and not $arxive) {
   print "\n\n DOI found for $file is:$URL\n\n";
   $result=&prompt("Is it ok (y/n/e(dit))?");
   if ("$result" eq "y") {

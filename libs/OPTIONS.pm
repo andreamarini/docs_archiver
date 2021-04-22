@@ -31,6 +31,7 @@ sub OPTIONS{
             "a"              => \$add,
             "d"              => \$dump,
             "c"              => \$clean,
+            "arxive"         => \$arxive,
             "fix"            => \$fix,
             "view"           => \$view,
             "s"              => \$simulate,
@@ -52,6 +53,7 @@ sub usage {
                    -a                      Add (to the default DB)
                    -d                      Dump contents
                    -fix                    Fix the INPUT bib file
+                   -arxive                 Force to use arXive search
                    -doi    [DOI]           Doi
                    -g      [PATTERN]       Group 
                    -r      [PATTERN]       Replace
