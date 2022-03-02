@@ -23,13 +23,30 @@
 #
 sub FIX_it{
 my ($ID) = @_;
-# for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
-#   if ($BIB[$ID][$i1]->{author}) 
-#   {
-#    my $authors=latex_encode($BIB[$ID][$i1]->{author});
-#    $BIB[$ID][$i1]->{author}=$authors;
-#   }
-# }
+ for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
+   if ($BIB[$ID][$i1]->{title} =~ /textlangle/) 
+   {
+     $title=$BIB[$ID][$i1]->{title};
+     print "\n $title\n";
+     $title =~ s/\\textlanglei//g;
+     $title =~ s/\\textlanglemi//g;
+     $title =~ s/\\textlanglemath//g;
+     $title =~ s/\\textlangle//g;
+     $title =~ s/\\textrangle//g;
+     $title =~ s/mrow//g;
+     $title =~ s/msub//g;
+     $title =~ s/\ mi//g;
+     $title =~ s/\ mn//g;
+     $title =~ s/\/mi//g;
+     $title =~ s/\/i/ /g;
+     $title =~ s/\/mn//g;
+     $title =~ s/math\ display//g;
+     $title =~ s/math//g;
+     $title =~ s/\///g;
+     print "=> $title\n";
+     $BIB[$ID][$i1]->{title}=$title;
+   }
+ }
 #
 # for (my $i1 = 0; $i1 < $NBIB[$ID]; $i1 = $i1 + 1){
 #  foreach my $var(keys %{$BIB[$ID][$i1]}){
