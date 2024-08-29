@@ -32,7 +32,7 @@ sub OPTIONS{
             "d"              => \$dump,
             "c"              => \$clean,
             "arxive"         => \$arxive,
-            "fix"            => \$fix,
+            "fix:s"          => \$fix,
             "view"           => \$view,
             "s"              => \$simulate,
             "r=s"            => \$replace,
@@ -52,7 +52,7 @@ sub usage {
                    -c                      Clean the temporary files after coping
                    -a                      Add (to the default DB)
                    -d                      Dump contents
-                   -fix                    Fix the INPUT bib file
+                   -fix    [WHAT]          Fix the INPUT bib file. WHAT=symbols,more
                    -arxive                 Force to use arXive search
                    -doi    [DOI]           Doi
                    -g      [PATTERN]       Group 
