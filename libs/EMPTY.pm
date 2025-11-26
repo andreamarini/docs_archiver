@@ -29,6 +29,10 @@ sub EMPTY{
  $new_pdf=$file;
  $new_pdf=~ s/ /_/g;
  $new_pdf=~ s/,/_/g;
+ $new_pdf=~ s/\[/_/g;
+ $new_pdf=~ s/\]/_/g;
+ $new_pdf=~ s/\(/_/g;
+ $new_pdf=~ s/\)/_/g;
  &command("mv \"$file\" \"$new_pdf\"");
  $file=$new_pdf;
  #
