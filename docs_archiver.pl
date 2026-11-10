@@ -25,6 +25,7 @@
 # Paths
 $HOME=$ENV{"HOME"};
 do "$HOME/.docs_archiver/src.pl";
+print "$SRC\n";
 do "$SRC/libs/MODULES.pl";
 #
 # Initialize
@@ -49,8 +50,8 @@ if ($out_bib_file  =~ /press/     ) {
 if ($in_bib_file  =~ /press/     ) {
  $in_bib_file="/home/marini/Domande-Documenti/Personal/Letture/press.bib";
 };
-if (not $in_bib_file  and not $add) {$in_bib_file="/home/marini/Papers_and_Results/bibliography.bib"};
-if (not $out_bib_file and     $add) {$out_bib_file="/home/marini/Papers_and_Results/bibliography.bib"};
+if (not $in_bib_file  and not $add) {$in_bib_file="/home/marini/Papers/bibliography.bib"};
+if (not $out_bib_file and     $add) {$out_bib_file="/home/marini/Papers/bibliography.bib"};
 #
 # No input bib file? Create an empty one
 #
